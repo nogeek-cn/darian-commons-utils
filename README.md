@@ -1,6 +1,6 @@
 # 主页
 - https://gitee.com/Darian1996/darian-commons-utils
-- https://github.com/Darian1996/darian-commons-utils/commits/master
+- https://github.com/Darian1996/darian-commons-utils
 
 
 # darian-commons-utils
