@@ -5,7 +5,7 @@ package com.darian.spring.module;
  *
  *
  * @author <a href="mailto:1934849492@qq.com">Darian</a>
- * @date 2020/12/5  19:15
+ * @date 2020/12/5  19:25
  */
 public interface IResultEnum {
 
