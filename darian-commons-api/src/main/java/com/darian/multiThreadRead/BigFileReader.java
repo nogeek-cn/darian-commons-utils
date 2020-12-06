@@ -17,16 +17,16 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
 public class BigFileReader {
-    private int               threadSize;
-    private String            charset;
-    private int               bufferSize;
-    private Consumer<String>  consumer;
-    private ExecutorService   executorService;
-    private long              fileLength;
-    private RandomAccessFile  rAccessFile;
+    private int threadSize;
+    private String charset;
+    private int bufferSize;
+    private Consumer<String> consumer;
+    private ExecutorService executorService;
+    private long fileLength;
+    private RandomAccessFile rAccessFile;
     private Set<StartEndPair> startEndPairs;
-    private CyclicBarrier     cyclicBarrier;
-    private AtomicLong        counter = new AtomicLong(0);
+    private CyclicBarrier cyclicBarrier;
+    private AtomicLong counter = new AtomicLong(0);
 
     private BigFileReader(File file, Consumer<String> consumer, String charset, int bufferSize, int threadSize) {
         this.fileLength = file.length();
@@ -44,7 +44,12 @@ public class BigFileReader {
     }
 
     public void start() {
+        // 这里计算出错，这次修复时间的问题
         long everySize = this.fileLength / this.threadSize;
+        // 可能分成两份，但是分成了三个分片。
+        everySize = everySize + 1;
+
+        long caculateSizeStartTime = System.currentTimeMillis();
         try {
             calculateStartEnd(0, everySize);
         } catch (IOException e) {
@@ -52,11 +57,16 @@ public class BigFileReader {
             return;
         }
 
+        long caculateSizeEndTime = System.currentTimeMillis();
+
+        System.out.println("[caculate]" + (caculateSizeEndTime - caculateSizeStartTime));
+
         final long startTime = System.currentTimeMillis();
         cyclicBarrier = new CyclicBarrier(startEndPairs.size(), new Runnable() {
 
             @Override
             public void run() {
+                System.out.println("size[ " + startEndPairs.size() + " ]");
                 System.out.println("use time: " + (System.currentTimeMillis() - startTime));
                 System.out.println("all line: " + counter.get());
             }
@@ -140,25 +150,35 @@ public class BigFileReader {
 
         @Override
         public boolean equals(Object obj) {
-            if (this == obj) { return true; }
-            if (obj == null) { return false; }
-            if (getClass() != obj.getClass()) { return false; }
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
             StartEndPair other = (StartEndPair) obj;
-            if (end != other.end) { return false; }
-            if (start != other.start) { return false; }
+            if (end != other.end) {
+                return false;
+            }
+            if (start != other.start) {
+                return false;
+            }
             return true;
         }
 
     }
 
     private class SliceReaderTask implements Runnable {
-        private long   start;
-        private long   sliceSize;
+        private long start;
+        private long sliceSize;
         private byte[] readBuff;
 
         /**
-         * @param start read position (include)
-         * @param end   the position read to(include)
+         * @param pair pair.start read position (include)
+         *             pair.end the position read to(include)
          */
         public SliceReaderTask(StartEndPair pair) {
             this.start = pair.start;
@@ -202,11 +222,11 @@ public class BigFileReader {
     }
 
     public static class Builder {
-        private int              threadSize = 1;
-        private String           charset    = null;
-        private int              bufferSize = 1024 * 1024;
+        private int threadSize = 1;
+        private String charset = null;
+        private int bufferSize = 1024 * 1024;
         private Consumer<String> consumer;
-        private File             file;
+        private File file;
 
         public Builder(String filepath, Consumer<String> consumer) {
             this.file = new File(filepath);
@@ -216,7 +236,7 @@ public class BigFileReader {
             this.consumer = consumer;
         }
 
-        public Builder withTreahdSize(int size) {
+        public Builder withTreadSize(int size) {
             this.threadSize = size;
             return this;
         }
@@ -235,7 +255,6 @@ public class BigFileReader {
             return new BigFileReader(this.file, this.consumer, this.charset, this.bufferSize, this.threadSize);
         }
     }
-
 
 
 }
