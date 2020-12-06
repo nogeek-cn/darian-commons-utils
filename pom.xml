@@ -14,6 +14,7 @@
         <module>darian-commons-spring</module>
         <module>darian-commons-interface-utils</module>
         <module>darian-markdown-toc</module>
+        <module>darian-common-spring-job-task</module>
     </modules>
 
    <!--
