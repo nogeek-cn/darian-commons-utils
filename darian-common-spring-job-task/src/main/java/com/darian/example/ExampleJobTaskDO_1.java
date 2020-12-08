@@ -10,7 +10,7 @@ import lombok.Data;
  * @date 2020/12/6  1:37
  */
 @Data
-public class ExampleJobTaskDO implements JobTaskDOSerial {
+public class ExampleJobTaskDO_1 implements JobTaskDOSerial {
 
     public String jobTaskProcessorName;
 

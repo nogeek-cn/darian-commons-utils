@@ -1,4 +1,4 @@
-package com.darian.example;
+package com.darian.example2;
 
 import com.darian.jobTask.module.JobTaskProcessorGroupSerial;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
  * @date 2020/12/6  20:21
  */
 @AllArgsConstructor
-public enum ExampleJobTaskGroupEnum implements JobTaskProcessorGroupSerial {
+public enum Example2JobTaskGroupEnum_2 implements JobTaskProcessorGroupSerial {
 
 
     GROUP_1("GROUP_1", "分组1"),

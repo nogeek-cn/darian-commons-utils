@@ -1,4 +1,4 @@
-package com.darian.example;
+package com.darian.example2;
 
 import com.darian.jobTask.module.JobTaskProcessorLeverAndOrderSerial;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
  */
 
 @AllArgsConstructor
-public enum ExampleJobTaskLeverOrderEnum implements JobTaskProcessorLeverAndOrderSerial {
+public enum Example2JobTaskLeverOrderEnum_2 implements JobTaskProcessorLeverAndOrderSerial {
 
     LEVER_1("LEVER_1", 1),
 

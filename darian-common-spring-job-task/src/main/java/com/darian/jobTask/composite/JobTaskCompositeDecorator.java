@@ -10,8 +10,8 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.GenericTypeResolver;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,11 +75,30 @@ public abstract class JobTaskCompositeDecorator<JobTaskItem extends JobTaskDOSer
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        Map<String, AbstractJobTaskProcessor> beansOfType = applicationContext.getBeansOfType(AbstractJobTaskProcessor.class);
+        Map<String, AbstractJobTaskProcessor> beansOfType1 = applicationContext.getBeansOfType(AbstractJobTaskProcessor.class);
 
-        Collection<AbstractJobTaskProcessor> values = beansOfType.values();
+        Class<? extends JobTaskCompositeDecorator> compositeClass = this.getClass();
+        Class<?> compositeT = GenericTypeResolver.resolveTypeArgument(compositeClass, JobTaskCompositeDecorator.class);
 
-        Map<String, Map<String, Map<String, List<AbstractJobTaskProcessor>>>> beansMap = values.stream()
+        LOGGER.info(String.format("[%s][T][%s]", compositeClass.getSimpleName(), compositeT.getSimpleName()));
+
+        List<AbstractJobTaskProcessor> values = beansOfType1.values().stream()
+                .filter(processor -> {
+                    Class<? extends AbstractJobTaskProcessor> processorClass = processor.getClass();
+                    Class<?> processorT = GenericTypeResolver.resolveTypeArgument(processorClass, AbstractJobTaskProcessor.class);
+
+                    boolean match = Objects.equals(compositeT, processorT);
+                    LOGGER.info(
+                            String.format("[%s]<%s>\t[%s]<%s>\t[match:%s]",
+                                    compositeClass.getSimpleName(), compositeT.getSimpleName(),
+                                    processorClass.getSimpleName(), processorT.getSimpleName(),
+                                    match)
+                    );
+                    return match;
+                })
+                .collect(Collectors.toList());
+
+        Map<String, Map<String, Map<String, List<AbstractJobTaskProcessor>>>> taskInterfaceMap = values.stream()
                 .sorted((o1, o2) -> {
                     int o1Order = o1.getOrder();
                     int o2Order = o2.getOrder();
@@ -92,7 +111,8 @@ public abstract class JobTaskCompositeDecorator<JobTaskItem extends JobTaskDOSer
                         )
                 );
 
-        for (Map.Entry<String, Map<String, Map<String, List<AbstractJobTaskProcessor>>>> stringMapEntry : beansMap.entrySet()) {
+        // 校验只能存在一个组
+        for (Map.Entry<String, Map<String, Map<String, List<AbstractJobTaskProcessor>>>> stringMapEntry : taskInterfaceMap.entrySet()) {
             Map<String, Map<String, List<AbstractJobTaskProcessor>>> value = stringMapEntry.getValue();
 
             for (Map.Entry<String, Map<String, List<AbstractJobTaskProcessor>>> mapEntry : value.entrySet()) {
@@ -109,9 +129,8 @@ public abstract class JobTaskCompositeDecorator<JobTaskItem extends JobTaskDOSer
             }
         }
 
+        LOGGER.info(String.format("[%s][taskInterfaceMap][%s]:", compositeClass.getSimpleName(), taskInterfaceMap));
 
-        LOGGER.info("[beansMaps]:" + beansMap);
-
-        this.taskInterfaceMap = beansMap;
+        this.taskInterfaceMap = taskInterfaceMap;
     }
 }

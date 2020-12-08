@@ -1,4 +1,4 @@
-package com.darian.example;
+package com.darian.example2;
 
 import com.darian.jobTask.composite.JobTaskCompositeDecorator;
 import org.springframework.stereotype.Service;
@@ -11,5 +11,5 @@ import org.springframework.stereotype.Service;
  * @date 2020/12/6  3:40
  */
 @Service
-public class ExampleCompositeJob extends JobTaskCompositeDecorator<ExampleJobTaskDO> {
+public class ExampleCompositeJob_2 extends JobTaskCompositeDecorator<ExampleJobTaskDO_2> {
 }

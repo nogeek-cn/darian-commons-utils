@@ -13,25 +13,25 @@ import org.springframework.stereotype.Service;
  * @date 2020/12/6  3:41
  */
 @Service
-public class ExampleProcessor1 extends AbstractJobTaskProcessor<ExampleJobTaskDO> {
+public class ExampleProcessor_1_3 extends AbstractJobTaskProcessor<ExampleJobTaskDO_1> {
 
     @Override
     public String jobTaskProcessorName() {
-        return "ExampleProcessor1";
+        return "ExampleProcessor3";
     }
 
     @Override
-    public JobTaskResult doProcessor(ExampleJobTaskDO taskDO) {
+    public JobTaskResult doProcessor(ExampleJobTaskDO_1 taskDO) {
         return JobTaskResult.success();
     }
 
     @Override
     protected JobTaskProcessorLeverAndOrderSerial getLeverAndOrder() {
-        return ExampleJobTaskLeverOrderEnum.LEVER_1;
+        return ExampleJobTaskLeverOrderEnum_1.LEVER_1;
     }
 
     @Override
     protected JobTaskProcessorGroupSerial getGroup() {
-        return ExampleJobTaskGroupEnum.GROUP_1;
+        return ExampleJobTaskGroupEnum_1.GROUP_1;
     }
 }
