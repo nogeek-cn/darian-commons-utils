@@ -16,6 +16,7 @@
         <module>darian-markdown-toc</module>
         <module>darian-common-spring-job-task</module>
         <module>darian-common-remote-call</module>
+        <module>darian-common-demo-for-sofaware-layered</module>
     </modules>
 
    <!--
