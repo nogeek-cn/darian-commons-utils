@@ -24,7 +24,7 @@ public class ReentrantLockAQSDemo {
         CompletionService completionService = new ExecutorCompletionService(executorService);
 
         String thisThreadName = Thread.currentThread().getName();
-        System.out.println("[" + thisThreadName + "]初始状态：aqs_list:[ " + getAllThreadNameList() + " ]");
+        System.out.println("[" + thisThreadName + "] \t\t\t 初始状态：\t\t aqs_list:[ " + getAllThreadNameList() + " ]");
 
         for (int i = 0; i < threadCount; i++) {
             completionService.submit(new DemoThread(), null);
@@ -36,8 +36,29 @@ public class ReentrantLockAQSDemo {
                 count++;
             }
         }
-        System.out.println("[" + thisThreadName + "]结束状态：aqs_list:[ " + getAllThreadNameList() + " ]");
+        System.out.println("[" + thisThreadName + "] \t\t\t 结束状态：\t\t aqs_list:[ " + getAllThreadNameList() + " ]");
         executorService.shutdown();
+
+        // [main] 			 初始状态：		 aqs_list:[  ]
+        // [pool-1-thread-2]竞争到锁之前： 	 aqs_list:[  ]
+        // [pool-1-thread-1]竞争到锁之前： 	 aqs_list:[  ]
+        // [pool-1-thread-2]竞争到锁之后： 	 aqs_list:[  ]
+        // [pool-1-thread-3]竞争到锁之前： 	 aqs_list:[ pool-1-thread-1, (null node) ]
+        // [pool-1-thread-4]竞争到锁之前： 	 aqs_list:[ pool-1-thread-1, pool-1-thread-3, (null node) ]
+        // [pool-1-thread-5]竞争到锁之前： 	 aqs_list:[ pool-1-thread-1, pool-1-thread-3, pool-1-thread-4, (null node) ]
+        // [pool-1-thread-6]竞争到锁之前： 	 aqs_list:[ pool-1-thread-1, pool-1-thread-3, pool-1-thread-4, pool-1-thread-5, (null node) ]
+        // [pool-1-thread-2]竞争解锁以后： 	 aqs_list:[ pool-1-thread-1, pool-1-thread-3, pool-1-thread-4, pool-1-thread-5, pool-1-thread-6, (null node) ]
+        // [pool-1-thread-1]竞争到锁之后： 	 aqs_list:[ pool-1-thread-3, pool-1-thread-4, pool-1-thread-5, pool-1-thread-6, (null node) ]
+        // [pool-1-thread-3]竞争到锁之后： 	 aqs_list:[ pool-1-thread-4, pool-1-thread-5, pool-1-thread-6, (null node) ]
+        // [pool-1-thread-1]竞争解锁以后： 	 aqs_list:[ pool-1-thread-4, pool-1-thread-5, pool-1-thread-6, (null node) ]
+        // [pool-1-thread-4]竞争到锁之后： 	 aqs_list:[ pool-1-thread-5, pool-1-thread-6, (null node) ]
+        // [pool-1-thread-3]竞争解锁以后： 	 aqs_list:[ pool-1-thread-5, pool-1-thread-6, (null node) ]
+        // [pool-1-thread-5]竞争到锁之后： 	 aqs_list:[ pool-1-thread-6, (null node) ]
+        // [pool-1-thread-4]竞争解锁以后： 	 aqs_list:[ pool-1-thread-6, (null node) ]
+        // [pool-1-thread-5]竞争解锁以后： 	 aqs_list:[ pool-1-thread-6, (null node) ]
+        // [pool-1-thread-6]竞争到锁之后： 	 aqs_list:[ (null node) ]
+        // [pool-1-thread-6]竞争解锁以后： 	 aqs_list:[ (null node) ]
+        // [main] 			 结束状态：		 aqs_list:[ (null node) ]
 
     }
 
@@ -60,7 +81,7 @@ public class ReentrantLockAQSDemo {
                 e.printStackTrace();
             } finally {
                 reentrantLock.unlock();
-                System.out.println("[" + thisThreadName + "]竞争解锁以后： \t aqs_list:[ " + getAllThreadNameList() + "]");
+                System.out.println("[" + thisThreadName + "]竞争解锁以后： \t aqs_list:[ " + getAllThreadNameList() + " ]");
             }
 
         }
@@ -84,7 +105,7 @@ public class ReentrantLockAQSDemo {
 
             List<String> threadNameList = getAllThreadNameListByHead(head, new ArrayList<>());
 
-            return threadNameList.stream().collect(Collectors.joining(","));
+            return threadNameList.stream().collect(Collectors.joining(", "));
         } catch (Exception e) {
             e.printStackTrace();
         }
