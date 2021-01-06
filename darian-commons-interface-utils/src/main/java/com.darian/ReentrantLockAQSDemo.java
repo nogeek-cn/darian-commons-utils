@@ -14,8 +14,10 @@ import java.util.stream.Collectors;
 
 public class ReentrantLockAQSDemo {
 
-    static ReentrantLock reentrantLock = new ReentrantLock();
+    // 使用公平锁
+    static ReentrantLock reentrantLock = new ReentrantLock(true);
 
+    // 线程数量
     static int threadCount = 6;
 
     public static void main(String[] args) throws InterruptedException {
@@ -39,26 +41,26 @@ public class ReentrantLockAQSDemo {
         System.out.println("[" + thisThreadName + "] \t\t\t 结束状态：\t\t aqs_list:[ " + getAllThreadNameList() + " ]");
         executorService.shutdown();
 
-        // [main] 			 初始状态：		 aqs_list:[  ]
-        // [pool-1-thread-2]竞争到锁之前： 	 aqs_list:[  ]
-        // [pool-1-thread-1]竞争到锁之前： 	 aqs_list:[  ]
-        // [pool-1-thread-2]竞争到锁之后： 	 aqs_list:[  ]
-        // [pool-1-thread-3]竞争到锁之前： 	 aqs_list:[ pool-1-thread-1, (null node) ]
-        // [pool-1-thread-4]竞争到锁之前： 	 aqs_list:[ pool-1-thread-1, pool-1-thread-3, (null node) ]
-        // [pool-1-thread-5]竞争到锁之前： 	 aqs_list:[ pool-1-thread-1, pool-1-thread-3, pool-1-thread-4, (null node) ]
-        // [pool-1-thread-6]竞争到锁之前： 	 aqs_list:[ pool-1-thread-1, pool-1-thread-3, pool-1-thread-4, pool-1-thread-5, (null node) ]
-        // [pool-1-thread-2]竞争解锁以后： 	 aqs_list:[ pool-1-thread-1, pool-1-thread-3, pool-1-thread-4, pool-1-thread-5, pool-1-thread-6, (null node) ]
-        // [pool-1-thread-1]竞争到锁之后： 	 aqs_list:[ pool-1-thread-3, pool-1-thread-4, pool-1-thread-5, pool-1-thread-6, (null node) ]
-        // [pool-1-thread-3]竞争到锁之后： 	 aqs_list:[ pool-1-thread-4, pool-1-thread-5, pool-1-thread-6, (null node) ]
-        // [pool-1-thread-1]竞争解锁以后： 	 aqs_list:[ pool-1-thread-4, pool-1-thread-5, pool-1-thread-6, (null node) ]
-        // [pool-1-thread-4]竞争到锁之后： 	 aqs_list:[ pool-1-thread-5, pool-1-thread-6, (null node) ]
-        // [pool-1-thread-3]竞争解锁以后： 	 aqs_list:[ pool-1-thread-5, pool-1-thread-6, (null node) ]
-        // [pool-1-thread-5]竞争到锁之后： 	 aqs_list:[ pool-1-thread-6, (null node) ]
-        // [pool-1-thread-4]竞争解锁以后： 	 aqs_list:[ pool-1-thread-6, (null node) ]
-        // [pool-1-thread-5]竞争解锁以后： 	 aqs_list:[ pool-1-thread-6, (null node) ]
-        // [pool-1-thread-6]竞争到锁之后： 	 aqs_list:[ (null node) ]
-        // [pool-1-thread-6]竞争解锁以后： 	 aqs_list:[ (null node) ]
-        // [main] 			 结束状态：		 aqs_list:[ (null node) ]
+        //[main] 			 初始状态：		 aqs_list:[  ]
+        //[pool-1-thread-3]竞争到锁之前： 	 aqs_list:[  ]
+        //[pool-1-thread-3]竞争到锁之后： 	 aqs_list:[  ]
+        //[pool-1-thread-4]竞争到锁之前： 	 aqs_list:[  ]
+        //[pool-1-thread-5]竞争到锁之前： 	 aqs_list:[ (null thread), pool-1-thread-4 ]
+        //[pool-1-thread-6]竞争到锁之前： 	 aqs_list:[ (null thread), pool-1-thread-4, pool-1-thread-5 ]
+        //[pool-1-thread-2]竞争到锁之前： 	 aqs_list:[ (null thread), pool-1-thread-4, pool-1-thread-5, pool-1-thread-6 ]
+        //[pool-1-thread-1]竞争到锁之前： 	 aqs_list:[ (null thread), pool-1-thread-4, pool-1-thread-5 ]
+        //[pool-1-thread-3]竞争解锁以后： 	 aqs_list:[ (null thread) ]
+        //[pool-1-thread-4]竞争到锁之后： 	 aqs_list:[ (null thread), pool-1-thread-5, pool-1-thread-6, pool-1-thread-2, pool-1-thread-1 ]
+        //[pool-1-thread-5]竞争到锁之后： 	 aqs_list:[ (null thread), pool-1-thread-6, pool-1-thread-2, pool-1-thread-1 ]
+        //[pool-1-thread-4]竞争解锁以后： 	 aqs_list:[ (null thread), pool-1-thread-6, pool-1-thread-2, pool-1-thread-1 ]
+        //[pool-1-thread-5]竞争解锁以后： 	 aqs_list:[ (null thread), pool-1-thread-2, pool-1-thread-1 ]
+        //[pool-1-thread-6]竞争到锁之后： 	 aqs_list:[ (null thread), pool-1-thread-2, pool-1-thread-1 ]
+        //[pool-1-thread-2]竞争到锁之后： 	 aqs_list:[ (null thread), pool-1-thread-1 ]
+        //[pool-1-thread-6]竞争解锁以后： 	 aqs_list:[ (null thread), pool-1-thread-1 ]
+        //[pool-1-thread-1]竞争到锁之后： 	 aqs_list:[ (null thread) ]
+        //[pool-1-thread-2]竞争解锁以后： 	 aqs_list:[ (null thread) ]
+        //[pool-1-thread-1]竞争解锁以后： 	 aqs_list:[ (null thread) ]
+        //[main] 			 结束状态：		 aqs_list:[ (null thread) ]
 
     }
 
@@ -76,7 +78,7 @@ public class ReentrantLockAQSDemo {
                 System.out.println("[" + thisThreadName + "]竞争到锁之前： \t aqs_list:[ " + getAllThreadNameList() + " ]");
                 reentrantLock.lock();
                 System.out.println("[" + thisThreadName + "]竞争到锁之后： \t aqs_list:[ " + getAllThreadNameList() + " ]");
-                TimeUnit.SECONDS.sleep(3);
+                TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {
@@ -124,13 +126,15 @@ public class ReentrantLockAQSDemo {
             if (node == null) {
                 return threadNameList;
             }
+            threadNameList.add(getThread(node));
+
             Class<?> aClass = node.getClass();
             Field nextField = aClass.getDeclaredField("next");
             nextField.setAccessible(true);
 
             Object next = nextField.get(node);
 
-            threadNameList.add(getThread(next));
+
             return getAllThreadNameListByHead(next, threadNameList);
         } catch (Exception e) {
             e.printStackTrace();

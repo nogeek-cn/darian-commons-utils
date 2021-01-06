@@ -1,0 +1,122 @@
+package com.darian;
+
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+import static com.darian.ThreadUtils.getThreadName;
+
+public class ConditionProducerAndConsumerDemo {
+
+    static Queue<String> queue = new LinkedList<>();
+
+    static ReentrantLock reentrantLock = new ReentrantLock();
+
+    static Condition condition = reentrantLock.newCondition();
+
+    static int maxSize = 5;
+
+    static int threadCount = 6;
+
+    public static void main(String[] args) throws InterruptedException {
+        Producer producer = new Producer(queue, maxSize, reentrantLock, condition);
+        Consumer consumer = new Consumer(queue, maxSize, reentrantLock, condition);
+
+        producer.start();
+        consumer.start();
+    }
+
+
+
+}
+
+class Producer extends Thread {
+    private Queue<String> msgQueue;
+
+    private int maxSize;
+
+    private Lock lock;
+
+    private Condition condition;
+
+    public Producer(Queue<String> msgQueue, int maxSize, Lock lock, Condition condition) {
+        this.msgQueue = msgQueue;
+        this.maxSize = maxSize;
+        this.lock = lock;
+        this.condition = condition;
+    }
+
+    @Override
+    public void run() {
+        int i = 0;
+
+        while (true) {
+            i++;
+            lock.lock();  // synchronized
+            while (msgQueue.size() >= maxSize) {
+                System.out.println(getThreadName() + "生产队列满了，先等待");
+                try {
+                    condition.await(); // 阻塞线程并释放锁 wait
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            System.out.println(getThreadName() + "生产消息：" + i);
+            msgQueue.add("生产者消息内容" + i);
+            condition.signal(); // 唤醒阻塞状态下的线程
+            lock.unlock();
+        }
+    }
+}
+
+class Consumer extends Thread {
+    private Queue<String> msgQueue;
+
+    private int maxSize;
+
+    private Lock lock;
+
+    private Condition condition;
+
+    public Consumer(Queue<String> msgQueue, int maxSize, Lock lock, Condition condition) {
+        this.msgQueue = msgQueue;
+        this.maxSize = maxSize;
+        this.lock = lock;
+        this.condition = condition;
+    }
+
+    @Override
+    public void run() {
+
+        while (true) {
+            lock.lock();
+            if (msgQueue.isEmpty()) {
+                System.out.println(getThreadName() + "消费者队列空了，先等待");
+                try {
+                    condition.await(); // 阻塞线程并释放锁
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            System.out.println(getThreadName() + "消费者：" + msgQueue.remove());
+            condition.signal(); // 唤醒阻塞状态下的线程
+            lock.unlock();
+        }
+    }
+}
+
+class ThreadUtils {
+    public static String getThreadName() {
+        return "[" + Thread.currentThread().getName() + "]";
+    }
+}
