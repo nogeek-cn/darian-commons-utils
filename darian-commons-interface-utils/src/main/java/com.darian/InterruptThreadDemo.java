@@ -31,9 +31,9 @@ public class InterruptThreadDemo {
         thread.start();
         // 保证线程的状态已经 run 之后
         sleep_second(1);
-        System.out.println(getCurrentThreadNameAndState() + "\t\tinterrupt->" + "[" + thread.getName() + "]:[" + thread.getState() + "]");
+        System.out.println(getCurrentThreadNameAndState() + "\t\t interrupt ->" + "[" + thread.getName() + "]: before [" + thread.getState() + "]");
         thread.interrupt();
-
+        System.out.println(getCurrentThreadNameAndState() + "\t\t interrupt ->" + "[" + thread.getName() + "]: after [" + thread.getState() + "]");
     }
 
     static void sleep_second(long seconds) {
@@ -70,7 +70,6 @@ public class InterruptThreadDemo {
                 LockSupport.park();
             } catch (Exception e) {
                 System.out.println("\t[interruptParkThread][error]" + e + "\n");
-                Thread.interrupted();
             }
         }, "park-thread");
     }
