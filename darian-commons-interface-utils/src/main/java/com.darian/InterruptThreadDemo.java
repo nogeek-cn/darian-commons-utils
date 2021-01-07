@@ -12,18 +12,15 @@ public class InterruptThreadDemo {
 
         // 对 park 住的线程执行 interrupt 方法
         interruptParkThread();
-        sleep_second(1);
-        System.out.println();
 
         // 对 wait 中的线程执行 interrupt 方法
         interruptWaitThread();
-        sleep_second(1);
-        System.out.println();
+
+        // 对 wait time 中的线程执行 interrupt 方法
+        interruptWaitTimeThread();
 
         // 对 sleep 中的线程执行 interrupt 方法
         interruptSleepThread();
-        sleep_second(1);
-        System.out.println();
 
         // 对 join 中的线程执行 interrupt 方法
         interruptJoinThread();
@@ -34,7 +31,7 @@ public class InterruptThreadDemo {
         thread.start();
         // 保证线程的状态已经 run 之后
         sleep_second(1);
-        System.out.println(thread.getState());
+        System.out.println(getCurrentThreadNameAndState() + "\t\tinterrupt->" + "[" + thread.getName() + "]:[" + thread.getState() + "]");
         thread.interrupt();
 
     }
@@ -48,23 +45,23 @@ public class InterruptThreadDemo {
     }
 
     static void interruptParkThread() {
-        System.out.println("interruptParkThread");
         interruptThread(getParkThread());
     }
 
     static void interruptWaitThread() {
-        System.out.println("interruptWaitThread");
         interruptThread(getWaitThread());
     }
 
     static void interruptSleepThread() {
-        System.out.println("interruptSleepThread");
         interruptThread(getSleepThread());
     }
 
     static void interruptJoinThread() {
-        System.out.println("interruptJoinThread");
         interruptThread(getJoinThread());
+    }
+
+    static void interruptWaitTimeThread() {
+        interruptThread(getWaitTimeThread());
     }
 
     static Thread getParkThread() {
@@ -72,9 +69,23 @@ public class InterruptThreadDemo {
             try {
                 LockSupport.park();
             } catch (Exception e) {
-                System.out.println("\t[interruptParkThread][error]" + e);
+                System.out.println("\t[interruptParkThread][error]" + e + "\n");
+                Thread.interrupted();
             }
-        });
+        }, "park-thread");
+    }
+
+    static Thread getWaitTimeThread() {
+        return new Thread(() -> {
+            Object lock = new Object();
+            synchronized (lock) {
+                try {
+                    lock.wait();
+                } catch (Exception e) {
+                    System.out.println(getCurrentThreadNameAndState() + "\t[interruptWaitTimeThread][error]" + e + "\n");
+                }
+            }
+        }, "wait-time-thread");
     }
 
     static Thread getWaitThread() {
@@ -84,10 +95,10 @@ public class InterruptThreadDemo {
                 try {
                     lock.wait();
                 } catch (Exception e) {
-                    System.out.println("\t[interruptWaitThread][error]" + e);
+                    System.out.println(getCurrentThreadNameAndState() + "\t[interruptWaitThread][error]" + e + "\n");
                 }
             }
-        });
+        }, "wait-thread");
     }
 
     static Thread getJoinThread() {
@@ -97,10 +108,10 @@ public class InterruptThreadDemo {
             try {
                 sleepThread.join();
             } catch (InterruptedException e) {
-                System.out.println("\t[interruptJoinThread][error]" + e);
+                System.out.println(getCurrentThreadNameAndState() + "\t[interruptJoinThread][error]" + e + "\n");
             }
 
-        });
+        }, "join-thread");
     }
 
     static Thread getSleepThread() {
@@ -108,8 +119,12 @@ public class InterruptThreadDemo {
             try {
                 TimeUnit.DAYS.sleep(1);
             } catch (InterruptedException e) {
-                System.out.println("\t[interruptSleepThread][error]" + e);
+                System.out.println(getCurrentThreadNameAndState() + "\t[interruptSleepThread][error]" + e + "\n");
             }
-        });
+        }, "sleep-thread");
+    }
+
+    static String getCurrentThreadNameAndState() {
+        return "[" + Thread.currentThread().getName() + "]:[" + Thread.currentThread().getState() + "]\t\t";
     }
 }
