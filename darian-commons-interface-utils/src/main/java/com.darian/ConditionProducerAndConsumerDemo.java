@@ -13,13 +13,11 @@ public class ConditionProducerAndConsumerDemo {
 
     static Queue<String> queue = new LinkedList<>();
 
-    static ReentrantLock reentrantLock = new ReentrantLock();
+    static ReentrantLock reentrantLock = new ReentrantLock(true);
 
     static Condition condition = reentrantLock.newCondition();
 
-    static int maxSize = 5;
-
-    static int threadCount = 6;
+    static int maxSize = 3;
 
     public static void main(String[] args) throws InterruptedException {
         Producer producer = new Producer(queue, maxSize, reentrantLock, condition);
@@ -27,6 +25,21 @@ public class ConditionProducerAndConsumerDemo {
 
         producer.start();
         consumer.start();
+        //[producer]生产消息：1
+        //[producer]生产消息：2
+        //[producer]生产消息：3
+        //[consumer]消费者：生产者消息内容1
+        //[consumer]消费者：生产者消息内容2
+        //[consumer]消费者：生产者消息内容3
+        //[consumer]消费者队列空了，先等待
+        //[producer]生产消息：4
+        //[producer]生产消息：5
+        //[producer]生产消息：6
+        //[producer]生产队列满了，先等待
+        //[consumer]消费者：生产者消息内容4
+        //[consumer]消费者：生产者消息内容5
+        //[consumer]消费者：生产者消息内容6
+        //[consumer]消费者队列空了，先等待
     }
 
 
@@ -47,6 +60,7 @@ class Producer extends Thread {
         this.maxSize = maxSize;
         this.lock = lock;
         this.condition = condition;
+        setName("producer");
     }
 
     @Override
@@ -92,6 +106,7 @@ class Consumer extends Thread {
         this.maxSize = maxSize;
         this.lock = lock;
         this.condition = condition;
+        setName("consumer");
     }
 
     @Override

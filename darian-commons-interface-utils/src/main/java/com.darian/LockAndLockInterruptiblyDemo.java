@@ -17,6 +17,9 @@ public class LockAndLockInterruptiblyDemo {
 
         // 对 正在争抢 lockInterruptibly 的线程  interrupt
         interruptLockInterruptibly();
+
+        // 控制台打印：
+        //[ThreadLockInterruptibly]:争抢锁异常：java.lang.InterruptedException
     }
 
     static void interruptLockInterruptibly() {
@@ -53,7 +56,7 @@ public class LockAndLockInterruptiblyDemo {
             try {
                 lock_Interruptibly_lock.lockInterruptibly();
             } catch (InterruptedException e) {
-                System.err.println("[ThreadLockInterruptibly]:争抢锁异常：" + e);
+                System.out.println("[ThreadLockInterruptibly]:争抢锁异常：" + e);
             }
             // 这列不解锁
         }

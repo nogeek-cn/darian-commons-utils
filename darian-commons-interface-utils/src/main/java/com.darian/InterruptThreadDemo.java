@@ -24,16 +24,35 @@ public class InterruptThreadDemo {
 
         // 对 join 中的线程执行 interrupt 方法
         interruptJoinThread();
-
+        
+        //[main]:[RUNNABLE]				 interrupt ->[park-thread]: before [WAITING]
+        //[main]:[RUNNABLE]				 interrupt ->[park-thread]: after [WAITING]
+        //[main]:[RUNNABLE]				 interrupt ->[wait-thread]: before [WAITING]
+        //[main]:[RUNNABLE]				 interrupt ->[wait-thread]: after [WAITING]
+        //[wait-thread]:[RUNNABLE]			[interruptWaitThread][error]java.lang.InterruptedException
+        //
+        //[main]:[RUNNABLE]				 interrupt ->[wait-time-thread]: before [WAITING]
+        //[main]:[RUNNABLE]				 interrupt ->[wait-time-thread]: after [WAITING]
+        //[wait-time-thread]:[RUNNABLE]			[interruptWaitTimeThread][error]java.lang.InterruptedException
+        //
+        //[main]:[RUNNABLE]				 interrupt ->[sleep-thread]: before [TIMED_WAITING]
+        //[main]:[RUNNABLE]				 interrupt ->[sleep-thread]: after [TIMED_WAITING]
+        //[sleep-thread]:[RUNNABLE]			[interruptSleepThread][error]java.lang.InterruptedException: sleep interrupted
+        //
+        //[main]:[RUNNABLE]				 interrupt ->[join-thread]: before [WAITING]
+        //[main]:[RUNNABLE]				 interrupt ->[join-thread]: after [WAITING]
+        //[join-thread]:[RUNNABLE]			[interruptJoinThread][error]java.lang.InterruptedException
     }
 
     static void interruptThread(Thread thread) {
         thread.start();
         // 保证线程的状态已经 run 之后
         sleep_second(1);
-        System.out.println(getCurrentThreadNameAndState() + "\t\t interrupt ->" + "[" + thread.getName() + "]: before [" + thread.getState() + "]");
+        System.out.println(
+                getCurrentThreadNameAndState() + "\t\t interrupt ->" + "[" + thread.getName() + "]: before [" + thread.getState() + "]");
         thread.interrupt();
-        System.out.println(getCurrentThreadNameAndState() + "\t\t interrupt ->" + "[" + thread.getName() + "]: after [" + thread.getState() + "]");
+        System.out.println(
+                getCurrentThreadNameAndState() + "\t\t interrupt ->" + "[" + thread.getName() + "]: after [" + thread.getState() + "]");
     }
 
     static void sleep_second(long seconds) {
