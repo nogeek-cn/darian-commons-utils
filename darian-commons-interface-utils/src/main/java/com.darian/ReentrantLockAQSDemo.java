@@ -2,6 +2,7 @@ package com.darian;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.TreeMap;
@@ -14,6 +15,7 @@ import java.util.concurrent.locks.AbstractOwnableSynchronizer;
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ReentrantLockAQSDemo {
 
@@ -43,24 +45,24 @@ public class ReentrantLockAQSDemo {
         executorService.shutdown();
 
         //[main           ] 	 竞争开始状态 	 aqs_state:[0] 	 aqs_eo_thread:[(null thread)] 	 aqs_list:[]
-        //[pool-1-thread-2] 	 竞争到锁之前 	 aqs_state:[0] 	 aqs_eo_thread:[(null thread)] 	 aqs_list:[]
-        //[pool-1-thread-2] 	 竞争到锁之后 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-2] 	 aqs_list:[]
-        //[pool-1-thread-1] 	 竞争到锁之前 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-2] 	 aqs_list:[]
-        //[pool-1-thread-4] 	 竞争到锁之前 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-2] 	 aqs_list:[(null thread), pool-1-thread-1]
-        //[pool-1-thread-3] 	 竞争到锁之前 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-2] 	 aqs_list:[(null thread), pool-1-thread-1]
-        //[pool-1-thread-5] 	 竞争到锁之前 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-2] 	 aqs_list:[(null thread), pool-1-thread-1, pool-1-thread-4, pool-1-thread-3]
-        //[pool-1-thread-6] 	 竞争到锁之前 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-2] 	 aqs_list:[(null thread), pool-1-thread-1, pool-1-thread-4, pool-1-thread-3, pool-1-thread-5]
-        //[pool-1-thread-1] 	 竞争到锁之后 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-1] 	 aqs_list:[(null thread), pool-1-thread-4, pool-1-thread-3, pool-1-thread-5, pool-1-thread-6]
-        //[pool-1-thread-2] 	 竞争解锁以后 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-1] 	 aqs_list:[(null thread), pool-1-thread-4, pool-1-thread-3, pool-1-thread-5, pool-1-thread-6]
-        //[pool-1-thread-4] 	 竞争到锁之后 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-4] 	 aqs_list:[(null thread), pool-1-thread-3, pool-1-thread-5, pool-1-thread-6]
-        //[pool-1-thread-1] 	 竞争解锁以后 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-4] 	 aqs_list:[(null thread), pool-1-thread-3, pool-1-thread-5, pool-1-thread-6]
-        //[pool-1-thread-4] 	 竞争解锁以后 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-3] 	 aqs_list:[(null thread), pool-1-thread-5,pool-1-thread-6]
-        //[pool-1-thread-3] 	 竞争到锁之后 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-3] 	 aqs_list:[(null thread), pool-1-thread-5,pool-1-thread-6]
-        //[pool-1-thread-5] 	 竞争到锁之后 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-5] 	 aqs_list:[(null thread), pool-1-thread-6]
-        //[pool-1-thread-3] 	 竞争解锁以后 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-5] 	 aqs_list:[(null thread), pool-1-thread-6]
-        //[pool-1-thread-6] 	 竞争到锁之后 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-6] 	 aqs_list:[(null thread)]
-        //[pool-1-thread-5] 	 竞争解锁以后 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-6] 	 aqs_list:[(null thread)]
-        //[pool-1-thread-6] 	 竞争解锁以后 	 aqs_state:[0] 	 aqs_eo_thread:[(null thread)] 	 aqs_list:[(null thread)]
+        //[pool-1-thread-1] 	 竞争到锁之前 	 aqs_state:[0] 	 aqs_eo_thread:[(null thread)] 	 aqs_list:[]
+        //[pool-1-thread-1] 	 竞争到锁之后 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-1] 	 aqs_list:[]
+        //[pool-1-thread-2] 	 竞争到锁之前 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-1] 	 aqs_list:[]
+        //[pool-1-thread-5] 	 竞争到锁之前 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-1] 	 aqs_list:[(null thread),(pool-1-thread-2)]
+        //[pool-1-thread-4] 	 竞争到锁之前 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-1] 	 aqs_list:[(null thread),(pool-1-thread-2:SIGNAL), (pool-1-thread-5)]
+        //[pool-1-thread-6] 	 竞争到锁之前 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-1] 	 aqs_list:[(null thread),(pool-1-thread-2:SIGNAL), (pool-1-thread-5:SIGNAL), (pool-1-thread-4)]
+        //[pool-1-thread-3] 	 竞争到锁之前 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-1] 	 aqs_list:[(null thread),(pool-1-thread-2), (pool-1-thread-5:SIGNAL), (pool-1-thread-4:SIGNAL), (pool-1-thread-6)]
+        //[pool-1-thread-1] 	 竞争解锁以后 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-2] 	 aqs_list:[(null thread),(pool-1-thread-5:SIGNAL), (pool-1-thread-4:SIGNAL), (pool-1-thread-6:SIGNAL), (pool-1-thread-3)]
+        //[pool-1-thread-2] 	 竞争到锁之后 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-2] 	 aqs_list:[(null thread),(pool-1-thread-5:SIGNAL), (pool-1-thread-4:SIGNAL), (pool-1-thread-6:SIGNAL), (pool-1-thread-3)]
+        //[pool-1-thread-5] 	 竞争到锁之后 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-5] 	 aqs_list:[(null thread),(pool-1-thread-4:SIGNAL), (pool-1-thread-6:SIGNAL), (pool-1-thread-3)]
+        //[pool-1-thread-2] 	 竞争解锁以后 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-5] 	 aqs_list:[(null thread),(pool-1-thread-4:SIGNAL), (pool-1-thread-6:SIGNAL), (pool-1-thread-3)]
+        //[pool-1-thread-4] 	 竞争到锁之后 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-4] 	 aqs_list:[(null thread),(pool-1-thread-6:SIGNAL), (pool-1-thread-3)]
+        //[pool-1-thread-5] 	 竞争解锁以后 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-4] 	 aqs_list:[(null thread),(pool-1-thread-6:SIGNAL), (pool-1-thread-3)]
+        //[pool-1-thread-6] 	 竞争到锁之后 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-6] 	 aqs_list:[(null thread),(pool-1-thread-3)]
+        //[pool-1-thread-4] 	 竞争解锁以后 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-6] 	 aqs_list:[(null thread),(pool-1-thread-3)]
+        //[pool-1-thread-3] 	 竞争到锁之后 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-3] 	 aqs_list:[(null thread)]
+        //[pool-1-thread-6] 	 竞争解锁以后 	 aqs_state:[1] 	 aqs_eo_thread:[pool-1-thread-3] 	 aqs_list:[(null thread)]
+        //[pool-1-thread-3] 	 竞争解锁以后 	 aqs_state:[0] 	 aqs_eo_thread:[(null thread)] 	 aqs_list:[(null thread)]
         //[main           ] 	 竞争结束状态 	 aqs_state:[0] 	 aqs_eo_thread:[(null thread)] 	 aqs_list:[(null thread)]
 
     }
@@ -235,7 +237,27 @@ public class ReentrantLockAQSDemo {
             if (thread == null) {
                 return "(null thread)";
             }
-            return getThreadName(thread);
+            String threadName = getThreadName(thread);
+
+            Field waitStatusField = aClass.getDeclaredField("waitStatus");
+            waitStatusField.setAccessible(true);
+            int waitStatus = (int) waitStatusField.get(node);
+            String waitStatusStr = "";
+            if (waitStatus == 1) {
+                waitStatusStr = "CANCELLED";
+            } else if (waitStatus == -1) {
+                waitStatusStr = "SIGNAL";
+            } else if (waitStatus == -2) {
+                waitStatusStr = "CONDITION";
+            } else if (waitStatus == -3) {
+                waitStatusStr = "PROPAGATE";
+            }
+            String threadNameAndWaitStatus = Arrays.asList(threadName, waitStatusStr)
+                    .stream()
+                    .filter(str -> str != null && !"".equals(str))
+                    .map(String::valueOf)
+                    .collect(Collectors.joining(":", "(", ")"));
+            return threadNameAndWaitStatus;
         } catch (Exception e) {
             e.printStackTrace();
         }
