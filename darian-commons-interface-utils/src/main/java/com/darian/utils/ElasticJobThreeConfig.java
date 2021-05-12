@@ -1,4 +1,4 @@
-package com.darian;
+package com.darian.utils;
 
 import com.google.common.util.concurrent.RateLimiter;
 import lombok.Getter;
