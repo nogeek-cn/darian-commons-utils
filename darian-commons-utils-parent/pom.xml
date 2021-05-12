@@ -23,10 +23,16 @@
         <commons-lang3-version>3.9</commons-lang3-version>
         <fastjson-version>1.2.50</fastjson-version>
         <markdown-toc-version>1.0.8</markdown-toc-version>
+        <com-google-guava-guava-version>20.0</com-google-guava-guava-version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${com-google-guava-guava-version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
