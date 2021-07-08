@@ -19,6 +19,7 @@
         <module>darian-common-demo-for-sofaware-layered</module>
         <module>darian-common-filter-chain</module>
         <module>darian-common-math-mxparser</module>
+        <module>darian-common-spring-aop-jdk-and-cglib</module>
     </modules>
 
    <!--

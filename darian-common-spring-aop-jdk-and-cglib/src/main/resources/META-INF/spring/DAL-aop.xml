@@ -1,0 +1,23 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+<!--       xmlns="http://www.springframework.org/schema/beans"-->
+<!--       xmlns:aop="http://www.springframework.org/schema/aop"-->
+<!--       xmlns:context="http://www.springframework.org/schema/context"-->
+<!--       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd-->
+<!--        http://www.springframework.org/schema/aop http://www.springframework.org/schema/beans/spring-aop.xsd-->
+<!--        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">-->
+
+<!--&lt;!&ndash;    <context:annotation-config/>&ndash;&gt;-->
+<!--    <aop:aspectj-autoproxy proxy-target-class="false"/>-->
+
+<!--    <bean id="dalInterceptor" class="com.darian.spring.DALInterceptor"/>-->
+
+<!--    <aop:config>-->
+<!--        <aop:advisor advice-ref="dalInterceptor" pointcut-ref="dalPointCut"/>-->
+<!--        <aop:aspect>-->
+<!--            <aop:pointcut id="dalPointCut"-->
+<!--                          expression="@annotation(com.darian.spring.annotation.DalLogger) or @within(com.darian.spring.annotation.DalLogger)"/>-->
+<!--        </aop:aspect>-->
+<!--    </aop:config>-->
+
+<!--</beans>-->
