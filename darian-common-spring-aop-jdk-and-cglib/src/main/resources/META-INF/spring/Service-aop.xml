@@ -14,13 +14,13 @@ http://www.springframework.org/schema/aop/spring-aop.xsd">
     <context:annotation-config/>
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
-    <bean id="serviceInterceptor" class="com.darian.spring.ServiceInterceptor"/>
+    <bean id="serviceInterceptor" class="com.darian.spring.interceptor.ServiceInterceptor"/>
 
 
     <aop:config>
         <aop:pointcut id="servicePointCut"
                       expression="@annotation(com.darian.spring.annotation.ServiceLogger) or @within(com.darian.spring.annotation.ServiceLogger)"/>
-        <aop:advisor advice-ref="serviceInterceptor" pointcut-ref="servicePointCut" id="advice"/>
+        <aop:advisor advice-ref="serviceInterceptor" pointcut-ref="servicePointCut"/>
     </aop:config>
 
 </beans>
