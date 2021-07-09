@@ -17,6 +17,7 @@ public class ServiceTestImpl {
 
     @ServiceLogger
     public int test() {
+        System.out.println("ServiceTestImpl test");
         return 4;
     }
 }
