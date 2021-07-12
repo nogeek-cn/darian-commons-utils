@@ -14,8 +14,9 @@
     <artifactId>darian-commons-utils-parent</artifactId>
 
     <properties>
-        <jdk-source-version>11</jdk-source-version>
-        <jdk-target-version>11</jdk-target-version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+
         <junit-version>4.12</junit-version>
         <spring-boot-version>2.1.0.RELEASE</spring-boot-version>
         <maven-compiler-plugin-version>3.8.0</maven-compiler-plugin-version>
@@ -84,8 +85,8 @@
                     <compilerArgs>
                         <arg>--add-exports=java.base/jdk.internal.misc=ALL-UNNAMED</arg>
                     </compilerArgs>
-                    <source>${jdk-source-version}</source>
-                    <target>${jdk-target-version}</target>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
                     <release>11</release>
                 </configuration>
             </plugin>
