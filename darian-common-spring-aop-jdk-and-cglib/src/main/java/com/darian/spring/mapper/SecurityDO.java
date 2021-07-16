@@ -1,4 +1,4 @@
-package com.darian.spring.interceptor;
+package com.darian.spring.mapper;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -10,10 +10,7 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
-/***
- *
- * @author peng_zhan
- */
+
 @Data
 @TableName("login_security")
 public class SecurityDO {

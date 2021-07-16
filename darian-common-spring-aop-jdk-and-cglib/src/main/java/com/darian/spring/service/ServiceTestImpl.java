@@ -1,4 +1,4 @@
-package com.darian.spring;
+package com.darian.spring.service;
 
 import com.darian.spring.annotation.ServiceLogger;
 import org.springframework.stereotype.Service;

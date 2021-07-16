@@ -32,9 +32,6 @@ public class DALInterceptor implements MethodInterceptor {
 
     private Logger LOGGER = LoggerFactory.getLogger(getClass());
 
-    @Resource
-    private SqlSessionFactory sqlSessionFactory;
-
     @Override
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
         long start = System.currentTimeMillis();
@@ -42,17 +39,6 @@ public class DALInterceptor implements MethodInterceptor {
         String methodName = method.getName();
         Class<?> declaringClass = method.getDeclaringClass();
         String classSimpleName = declaringClass.getSimpleName();
-
-        Configuration configuration = sqlSessionFactory.getConfiguration();
-        if (Objects.equals(declaringClass, BaseMapper.class)) {
-            MappedStatement mappedStatement = configuration.getMappedStatement(methodName);
-            System.out.println("BaseMapper mappedStatement.getDatabaseId(): " + mappedStatement.getDatabaseId());
-            System.out.println("BaseMapper mappedStatement.getId(): " + mappedStatement.getId());
-        } else {
-            MappedStatement mappedStatement = configuration.getMappedStatement(declaringClass.getName() + "." + methodName);
-            System.out.println("mappedStatement.getDatabaseId(): " + mappedStatement.getDatabaseId());
-            System.out.println("mappedStatement.getId(): " + mappedStatement.getId());
-        }
 
         try {
             Object proceed = methodInvocation.proceed();

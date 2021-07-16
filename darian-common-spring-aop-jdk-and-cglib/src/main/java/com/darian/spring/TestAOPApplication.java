@@ -1,13 +1,12 @@
 package com.darian.spring;
 
-import com.darian.spring.interceptor.SecurityMapper;
-import com.darian.spring.interceptor.UserMapper;
+import com.darian.spring.mapper.SecurityMapper;
+import com.darian.spring.mapper.UserMapper;
+import com.darian.spring.service.ServiceTestImpl;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
-import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -20,11 +19,7 @@ import javax.annotation.Resource;
  */
 @SpringBootApplication
 @ImportResource({"classpath:META-INF/spring/*.xml"})
-@MapperScan(basePackages = "com.darian.spring.interceptor")
 public class TestAOPApplication {
-
-    @Resource
-    private DalMapper dalMapper;
 
     @Resource
     private ServiceTestImpl serviceTestImpl;
@@ -41,8 +36,6 @@ public class TestAOPApplication {
 
     @PostConstruct
     public void test() {
-//        dalMapper.test();
-//        serviceTestImpl.test();
         userMapper.selectById(1L);
         userMapper.selectByIdXXXXX(1L);
 
