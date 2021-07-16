@@ -9,6 +9,7 @@ import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.naming.factory.DataSourceLinkFactory;
+import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.datasource.DataSourceUtils;
@@ -34,6 +35,7 @@ public class DALInterceptor implements MethodInterceptor {
 
     @Override
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
+        System.out.println("Before DALInterceptor");
         long start = System.currentTimeMillis();
         Method method = methodInvocation.getMethod();
         String methodName = method.getName();
@@ -44,6 +46,7 @@ public class DALInterceptor implements MethodInterceptor {
             Object proceed = methodInvocation.proceed();
             return proceed;
         } finally {
+            System.out.println("After DALInterceptor");
             long end = System.currentTimeMillis();
             LOGGER.info(classSimpleName + "-" + methodName + ":" + (end - start) + "ms");
         }
