@@ -14,13 +14,13 @@ public class MybatisPlusLoggerInterceptor implements InnerInterceptor {
 
     @Override
     public void beforeQuery(Executor executor, MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) throws SQLException {
-        System.out.println("beforeQuery:" + getMappedStatementId(ms));
+        System.out.println("MybatisPlusLoggerInterceptor beforeQuery:" + getMappedStatementId(ms));
     }
 
 
     @Override
     public void beforeUpdate(Executor executor, MappedStatement ms, Object parameter) throws SQLException {
-        System.out.println("beforeUpdate:" + getMappedStatementId(ms));
+        System.out.println("MybatisPlusLoggerInterceptor beforeUpdate:" + getMappedStatementId(ms));
     }
 
 
