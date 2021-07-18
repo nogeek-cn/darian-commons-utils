@@ -11,17 +11,6 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <context:annotation-config/>
-    <import resource="dal-interceptor-bean.xml"/>
-    <aop:aspectj-autoproxy/>
-
-<!--    <bean id="dalInterceptor" class="com.darian.spring.interceptor.DALInterceptor"/>-->
-
-    <aop:config>
-        <aop:pointcut id="dalPointCut"
-                      expression="@annotation(com.darian.spring.annotation.DalLogger) or @within(com.darian.spring.annotation.DalLogger)
-                            or within(com.baomidou.mybatisplus.core.mapper.BaseMapper)"/>
-        <aop:advisor advice-ref="dalInterceptor" pointcut-ref="dalPointCut"/>
-    </aop:config>
+    <bean id="dalInterceptor" class="com.darian.spring.interceptor.DALInterceptor"/>
 
 </beans>

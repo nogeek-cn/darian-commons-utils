@@ -18,7 +18,9 @@ import javax.annotation.Resource;
  * @date 2021/7/9  上午12:32
  */
 @SpringBootApplication
-@ImportResource({"classpath:META-INF/spring/*.xml"})
+@ImportResource(
+        {"classpath:META-INF/spring/dal-interceptor-bean.xml",
+                "classpath:META-INF/spring/service-aspect.xml"})
 public class TestAOPApplication {
 
     @Resource
@@ -36,6 +38,7 @@ public class TestAOPApplication {
 
     @PostConstruct
     public void test() {
+        serviceTestImpl.test();
         userMapper.selectById(1L);
         userMapper.selectByIdXXXXX(1L);
 
