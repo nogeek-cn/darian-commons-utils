@@ -21,6 +21,7 @@
         <module>darian-common-math-mxparser</module>
         <module>darian-common-spring-aop-jdk-and-cglib</module>
         <module>darian-common-collection-stream</module>
+        <module>darian-common-swagger-enum-note</module>
     </modules>
 
    <!--
