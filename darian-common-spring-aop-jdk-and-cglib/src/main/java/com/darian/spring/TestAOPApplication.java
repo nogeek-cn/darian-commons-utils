@@ -1,5 +1,6 @@
 package com.darian.spring;
 
+import com.darian.spring.configuration.EnableAOPLogger;
 import com.darian.spring.mapper.SecurityMapper;
 import com.darian.spring.mapper.UserMapper;
 import com.darian.spring.service.ServiceTestImpl;
@@ -18,9 +19,7 @@ import javax.annotation.Resource;
  * @date 2021/7/9  上午12:32
  */
 @SpringBootApplication
-@ImportResource(
-        {"classpath:META-INF/spring/dal-interceptor-bean.xml",
-                "classpath:META-INF/spring/service-aspect.xml"})
+@EnableAOPLogger
 public class TestAOPApplication {
 
     @Resource

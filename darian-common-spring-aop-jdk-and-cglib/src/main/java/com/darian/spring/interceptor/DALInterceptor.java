@@ -47,7 +47,7 @@ public class DALInterceptor implements MethodInterceptor {
         } finally {
             System.out.println("After DALInterceptor");
             long end = System.currentTimeMillis();
-            LOGGER.info(classSimpleName + "-" + methodName + ":" + (end - start) + "ms");
+            LOGGER.info("DALInterceptor: " + classSimpleName + "-" + methodName + ":" + (end - start) + "ms");
         }
     }
 }
