@@ -1,7 +1,7 @@
 package com.darian.spring.interceptor;
 
 
-import com.darian.spring.annotation.ServiceLogger;
+import com.darian.spring.annotation.DalLogger;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,11 +12,11 @@ import java.lang.reflect.Method;
  *
  *
  * @author <a href="mailto:1934849492@qq.com">Darian</a>
- * @date 2021/7/9  下午21:10
+ * @date 2021/7/9  下午21:30
  */
-public class ServiceInterceptor extends BaseAbstractLogInterceptor {
+public class DalInterceptor extends BaseAbstractLogInterceptor {
 
-    private Logger LOGGER = LoggerFactory.getLogger(ServiceInterceptor.class);
+    private Logger LOGGER = LoggerFactory.getLogger(DalInterceptor.class);
 
     @Override
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
@@ -27,10 +27,10 @@ public class ServiceInterceptor extends BaseAbstractLogInterceptor {
         String classSimpleName = method.getDeclaringClass().getSimpleName();
         String methodName = method.getName();
 
-        ServiceLogger serviceLogger = methodInvocation.getMethod().getAnnotation(ServiceLogger.class);
+        DalLogger dalLogger = methodInvocation.getMethod().getAnnotation(DalLogger.class);
 
-        if (serviceLogger == null) {
-            serviceLogger = methodInvocation.getMethod().getDeclaringClass().getAnnotation(ServiceLogger.class);
+        if (dalLogger == null) {
+            dalLogger = methodInvocation.getMethod().getDeclaringClass().getAnnotation(DalLogger.class);
         }
 
         // 获取参数
@@ -54,7 +54,7 @@ public class ServiceInterceptor extends BaseAbstractLogInterceptor {
                 long endTime = System.currentTimeMillis();
                 long costTimes = endTime - startTime;
                 // TODO:
-                LOGGER.info(defaultConstructLogString(classSimpleName, methodName, isSuccess, costTimes, args, result, serviceLogger));
+                LOGGER.info(defaultConstructLogString(classSimpleName, methodName, isSuccess, costTimes, args, result, dalLogger));
             } catch (Exception e) {
                 LOGGER.error("[LOGGER][Controller][msg]", e);
             }
@@ -62,7 +62,7 @@ public class ServiceInterceptor extends BaseAbstractLogInterceptor {
     }
 
     protected final String defaultConstructLogString(String classSimpleName, String methodName, boolean isSuccess,
-                                                     long costTimes, Object[] args, Object result, ServiceLogger serviceLogger) {
+                                                     long costTimes, Object[] args, Object result, DalLogger dalLogger) {
 
         StringBuilder sb = new StringBuilder();
         sb.append(LOG_PARAM_PREFIX);
@@ -84,24 +84,24 @@ public class ServiceInterceptor extends BaseAbstractLogInterceptor {
         // TODO: 全局开关打开
 //        if ()
 
-        if (serviceLogger != null && serviceLogger.needParams()) {
+        if (dalLogger != null && dalLogger.needParams()) {
             // 参数已经有 "()" 号了
             sb.append(getMsgOfArgs(args));
         }
         // TODO: 全局开关打开
 
-        if (serviceLogger!= null && serviceLogger.needResult()) {
+        if (dalLogger!= null && dalLogger.needResult()) {
             sb.append(LOG_PARAM_PREFIX);
             sb.append(getMsg(result));
             sb.append(LOG_PARAM_SUFFIX);
         }
+
         sb.append(LOG_SUFFIX);
         return sb.toString().replaceAll("\n", "");
     }
 
 
     private boolean isSuccess(Object result) {
-
         return true;
     }
 }

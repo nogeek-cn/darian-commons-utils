@@ -12,14 +12,15 @@
         http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <context:annotation-config/>
-    <import resource="dal-interceptor-bean.xml"/>
-    <aop:aspectj-autoproxy/>
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <bean id="remoteCallInterceptor" class="com.darian.spring.interceptor.RemoteCallInterceptor"/>
+
 
     <aop:config>
-        <aop:pointcut id="dalPointCut"
-                      expression="@annotation(com.darian.spring.annotation.DalLogger) or @within(com.darian.spring.annotation.DalLogger)
-                            or within(com.baomidou.mybatisplus.core.mapper.BaseMapper)"/>
-        <aop:advisor advice-ref="dalInterceptor" pointcut-ref="dalPointCut"/>
+        <aop:pointcut id="remoteCallPointCut"
+                      expression="@annotation(com.darian.spring.annotation.RemoteCallLogger) or @within(com.darian.spring.annotation.RemoteCallLogger)"/>
+        <aop:advisor advice-ref="remoteCallInterceptor" pointcut-ref="remoteCallPointCut"/>
     </aop:config>
 
 </beans>

@@ -14,8 +14,9 @@ import java.lang.annotation.*;
  */
 
 //@ImportResource(
-//        {"classpath:META-INF/spring/dal-interceptor-bean.xml",
-//                "classpath:META-INF/spring/service-aspect.xml"})
+//        {"classpath:META-INF/spring/dal-aspect.xml",
+//                "classpath:META-INF/spring/service-aspect.xml",
+//                "classpath:META-INF/spring/controller-aspect.xml"})
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

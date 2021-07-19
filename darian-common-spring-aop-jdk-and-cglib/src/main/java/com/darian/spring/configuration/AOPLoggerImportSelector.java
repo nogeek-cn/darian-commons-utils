@@ -18,6 +18,7 @@ public class AOPLoggerImportSelector implements ImportSelector {
         Set<String> annotationTypes = importingClassMetadata.getAnnotationTypes();
         System.out.println(annotationTypes);
         return new String[]{ImportResourceDalInterceptor.class.getName()};
+//        return new String[]{};
 
 //        return new String[2]{"classpath:META-INF/spring/dal-interceptor-bean.xml",
 //                "classpath:META-INF/spring/service-aspect.xml"};

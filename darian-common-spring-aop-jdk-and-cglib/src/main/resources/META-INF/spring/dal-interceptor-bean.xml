@@ -11,6 +11,6 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <bean id="dalInterceptor" class="com.darian.spring.interceptor.DALInterceptor"/>
+    <bean id="dalInterceptor" class="com.darian.spring.interceptor.DalInterceptor"/>
 
 </beans>

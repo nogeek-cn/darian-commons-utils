@@ -1,7 +1,8 @@
 package com.darian.spring.interceptor;
 
 
-import com.darian.spring.annotation.ServiceLogger;
+import com.darian.spring.annotation.CacheLogger;
+import com.darian.spring.annotation.RemoteCallLogger;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,11 +13,11 @@ import java.lang.reflect.Method;
  *
  *
  * @author <a href="mailto:1934849492@qq.com">Darian</a>
- * @date 2021/7/9  下午21:10
+ * @date 2021/7/9  下午22:01
  */
-public class ServiceInterceptor extends BaseAbstractLogInterceptor {
+public class CacheInterceptor extends BaseAbstractLogInterceptor {
 
-    private Logger LOGGER = LoggerFactory.getLogger(ServiceInterceptor.class);
+    private Logger LOGGER = LoggerFactory.getLogger(CacheInterceptor.class);
 
     @Override
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
@@ -27,10 +28,10 @@ public class ServiceInterceptor extends BaseAbstractLogInterceptor {
         String classSimpleName = method.getDeclaringClass().getSimpleName();
         String methodName = method.getName();
 
-        ServiceLogger serviceLogger = methodInvocation.getMethod().getAnnotation(ServiceLogger.class);
+        CacheLogger cacheLogger = methodInvocation.getMethod().getAnnotation(CacheLogger.class);
 
-        if (serviceLogger == null) {
-            serviceLogger = methodInvocation.getMethod().getDeclaringClass().getAnnotation(ServiceLogger.class);
+        if (cacheLogger == null) {
+            cacheLogger = methodInvocation.getMethod().getDeclaringClass().getAnnotation(CacheLogger.class);
         }
 
         // 获取参数
@@ -54,7 +55,7 @@ public class ServiceInterceptor extends BaseAbstractLogInterceptor {
                 long endTime = System.currentTimeMillis();
                 long costTimes = endTime - startTime;
                 // TODO:
-                LOGGER.info(defaultConstructLogString(classSimpleName, methodName, isSuccess, costTimes, args, result, serviceLogger));
+                LOGGER.info(defaultConstructLogString(classSimpleName, methodName, isSuccess, costTimes, args, result, cacheLogger));
             } catch (Exception e) {
                 LOGGER.error("[LOGGER][Controller][msg]", e);
             }
@@ -62,7 +63,7 @@ public class ServiceInterceptor extends BaseAbstractLogInterceptor {
     }
 
     protected final String defaultConstructLogString(String classSimpleName, String methodName, boolean isSuccess,
-                                                     long costTimes, Object[] args, Object result, ServiceLogger serviceLogger) {
+                                                     long costTimes, Object[] args, Object result, CacheLogger cacheLogger) {
 
         StringBuilder sb = new StringBuilder();
         sb.append(LOG_PARAM_PREFIX);
@@ -84,13 +85,13 @@ public class ServiceInterceptor extends BaseAbstractLogInterceptor {
         // TODO: 全局开关打开
 //        if ()
 
-        if (serviceLogger != null && serviceLogger.needParams()) {
+        if (cacheLogger != null && cacheLogger.needParams()) {
             // 参数已经有 "()" 号了
             sb.append(getMsgOfArgs(args));
         }
         // TODO: 全局开关打开
 
-        if (serviceLogger!= null && serviceLogger.needResult()) {
+        if (cacheLogger!= null && cacheLogger.needResult()) {
             sb.append(LOG_PARAM_PREFIX);
             sb.append(getMsg(result));
             sb.append(LOG_PARAM_SUFFIX);
@@ -101,7 +102,11 @@ public class ServiceInterceptor extends BaseAbstractLogInterceptor {
 
 
     private boolean isSuccess(Object result) {
-
+        if (result == null) {
+            return false;
+        } else {
+            // TODO:  自定义成功还是失败
+        }
         return true;
     }
 }
