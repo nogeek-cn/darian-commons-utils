@@ -2,6 +2,7 @@ package com.darian.spring.interceptor;
 
 
 import com.darian.spring.annotation.ServiceLogger;
+import com.darian.spring.constant.AopLoggerConstants;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,9 @@ import java.lang.reflect.Method;
  */
 public class ServiceInterceptor extends BaseAbstractLogInterceptor {
 
-    private Logger LOGGER = LoggerFactory.getLogger(ServiceInterceptor.class);
+    private Logger SERVICE_LOGGER = LoggerFactory.getLogger(AopLoggerConstants.SERVICE_LOGGER_NAME);
+
+    private Logger SERVICE_SHADOW_LOGGER = LoggerFactory.getLogger(AopLoggerConstants.SERVICE_SHADOW_LOGGER_NAME);
 
     @Override
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
@@ -53,10 +56,15 @@ public class ServiceInterceptor extends BaseAbstractLogInterceptor {
             try {
                 long endTime = System.currentTimeMillis();
                 long costTimes = endTime - startTime;
-                // TODO:
-                LOGGER.info(defaultConstructLogString(classSimpleName, methodName, isSuccess, costTimes, args, result, serviceLogger));
+                templateLoggerInfo(SERVICE_LOGGER,
+                        SERVICE_SHADOW_LOGGER,
+                        defaultConstructLogString(classSimpleName, methodName, isSuccess, costTimes, args, result, serviceLogger));
             } catch (Exception e) {
-                LOGGER.error("[LOGGER][Controller][msg]", e);
+                templateLoggerError(SERVICE_LOGGER,
+                        SERVICE_SHADOW_LOGGER,
+                        "[LOGGER][SERVICE][msg]" + e.getMessage(), e);
+
+
             }
         }
     }

@@ -76,6 +76,44 @@ public abstract class BaseAbstractLogInterceptor implements MethodInterceptor {
      */
     protected static final String TIME_UNIT = "ms";
 
+    /**
+     * @param logger
+     * @param shadowLogger
+     * @param msg
+     */
+    protected void templateLoggerInfo(Logger logger, Logger shadowLogger, String msg) {
+        if (msg.length() > aopLoggerProperties.getMaxLength()) {
+            msg = msg.substring(0, aopLoggerProperties.getMaxLength()) + ")]";
+        }
+        if (isShadow()) {
+            shadowLogger.info(msg);
+        } else {
+            logger.info(msg);
+        }
+    }
+
+    /**
+     * @param logger
+     * @param shadowLogger
+     * @param msg
+     */
+    protected void templateLoggerError(Logger logger, Logger shadowLogger, String msg, Exception e) {
+        if (isShadow()) {
+            shadowLogger.error(msg, e);
+        } else {
+            logger.error(msg, e);
+        }
+    }
+
+    /**
+     * 是否是压测流量
+     *
+     * @return
+     */
+    protected boolean isShadow() {
+        // TODO: 是否是压测流量
+        return false;
+    }
 
     protected String getAPPContext() {
         // TODO: 获取上下文, TranceId 等等 MDC

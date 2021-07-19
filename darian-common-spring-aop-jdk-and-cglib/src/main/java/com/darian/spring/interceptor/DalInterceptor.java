@@ -2,9 +2,11 @@ package com.darian.spring.interceptor;
 
 
 import com.darian.spring.annotation.DalLogger;
+import com.darian.spring.constant.AopLoggerConstants;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.AopConfigException;
 
 import java.lang.reflect.Method;
 
@@ -16,7 +18,9 @@ import java.lang.reflect.Method;
  */
 public class DalInterceptor extends BaseAbstractLogInterceptor {
 
-    private Logger LOGGER = LoggerFactory.getLogger(DalInterceptor.class);
+    private Logger DAL_LOGGER = LoggerFactory.getLogger(AopLoggerConstants.DAL_LOGGER_NAME);
+
+    private Logger DAL_SHADOW_LOGGER = LoggerFactory.getLogger(AopLoggerConstants.DAL_SHADOW_LOGGER_NAME);
 
     @Override
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
@@ -53,10 +57,13 @@ public class DalInterceptor extends BaseAbstractLogInterceptor {
             try {
                 long endTime = System.currentTimeMillis();
                 long costTimes = endTime - startTime;
-                // TODO:
-                LOGGER.info(defaultConstructLogString(classSimpleName, methodName, isSuccess, costTimes, args, result, dalLogger));
+                templateLoggerInfo(DAL_LOGGER,
+                        DAL_SHADOW_LOGGER,
+                        defaultConstructLogString(classSimpleName, methodName, isSuccess, costTimes, args, result, dalLogger));
             } catch (Exception e) {
-                LOGGER.error("[LOGGER][Controller][msg]", e);
+                templateLoggerError(DAL_LOGGER,
+                        DAL_SHADOW_LOGGER,
+                        "[LOGGER][DAL][msg]" + e.getMessage(), e);
             }
         }
     }

@@ -1,8 +1,8 @@
 package com.darian.spring.interceptor;
 
 
-import com.darian.spring.annotation.ControllerLogger;
 import com.darian.spring.annotation.RemoteCallLogger;
+import com.darian.spring.constant.AopLoggerConstants;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,10 @@ import java.lang.reflect.Method;
  */
 public class RemoteCallInterceptor extends BaseAbstractLogInterceptor {
 
-    private Logger LOGGER = LoggerFactory.getLogger(RemoteCallInterceptor.class);
+    private Logger REMOTE_CALL_LOGGER = LoggerFactory.getLogger(AopLoggerConstants.REMOTE_CALL_LOGGER_NAME);
+
+    private Logger REMOTE_CALL_SHADOW_LOGGER = LoggerFactory.getLogger(AopLoggerConstants.REMOTE_CALL_SHADOW_LOGGER_NAME);
+
 
     @Override
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
@@ -54,10 +57,13 @@ public class RemoteCallInterceptor extends BaseAbstractLogInterceptor {
             try {
                 long endTime = System.currentTimeMillis();
                 long costTimes = endTime - startTime;
-                // TODO:
-                LOGGER.info(defaultConstructLogString(classSimpleName, methodName, isSuccess, costTimes, args, result, remoteCallLogger));
+                templateLoggerInfo(REMOTE_CALL_LOGGER,
+                        REMOTE_CALL_SHADOW_LOGGER,
+                        defaultConstructLogString(classSimpleName, methodName, isSuccess, costTimes, args, result, remoteCallLogger));
             } catch (Exception e) {
-                LOGGER.error("[LOGGER][Controller][msg]", e);
+                templateLoggerError(REMOTE_CALL_LOGGER,
+                        REMOTE_CALL_SHADOW_LOGGER,
+                        "[LOGGER][REMOTE_CALL][msg]" + e.getMessage(), e);
             }
         }
     }

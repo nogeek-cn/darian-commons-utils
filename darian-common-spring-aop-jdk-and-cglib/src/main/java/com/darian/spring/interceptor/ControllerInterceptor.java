@@ -2,6 +2,7 @@ package com.darian.spring.interceptor;
 
 
 import com.darian.spring.annotation.ControllerLogger;
+import com.darian.spring.constant.AopLoggerConstants;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,10 @@ import java.lang.reflect.Method;
  */
 public class ControllerInterceptor extends BaseAbstractLogInterceptor {
 
-    private Logger LOGGER = LoggerFactory.getLogger(ControllerInterceptor.class);
+    private Logger CONTROLLER_LOGGER = LoggerFactory.getLogger(AopLoggerConstants.CONTROLLER_LOGGER_NAME);
+
+    private Logger CONTROLLER_SHADOW_LOGGER = LoggerFactory.getLogger(AopLoggerConstants.CONTROLLER_SHADOW_LOGGER_NAME);
+
 
     @Override
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
@@ -53,10 +57,14 @@ public class ControllerInterceptor extends BaseAbstractLogInterceptor {
             try {
                 long endTime = System.currentTimeMillis();
                 long costTimes = endTime - startTime;
-                // TODO:
-                LOGGER.info(defaultConstructLogString(classSimpleName, methodName, isSuccess, costTimes, args, result, controllerLogger));
+
+                templateLoggerInfo(CONTROLLER_LOGGER,
+                        CONTROLLER_SHADOW_LOGGER,
+                        defaultConstructLogString(classSimpleName, methodName, isSuccess, costTimes, args, result, controllerLogger));
             } catch (Exception e) {
-                LOGGER.error("[LOGGER][Controller][msg]", e);
+                templateLoggerError(CONTROLLER_LOGGER,
+                        CONTROLLER_SHADOW_LOGGER,
+                        "[LOGGER][CONTROLLER][msg]" + e.getMessage(), e);
             }
         }
     }
@@ -88,7 +96,7 @@ public class ControllerInterceptor extends BaseAbstractLogInterceptor {
             }
         }
         if (aopLoggerProperties.isControllerLoggerResponse()) {
-            if (controllerLogger!= null && controllerLogger.needResult()) {
+            if (controllerLogger != null && controllerLogger.needResult()) {
                 sb.append(LOG_PARAM_PREFIX);
                 sb.append(getMsg(result));
                 sb.append(LOG_PARAM_SUFFIX);
