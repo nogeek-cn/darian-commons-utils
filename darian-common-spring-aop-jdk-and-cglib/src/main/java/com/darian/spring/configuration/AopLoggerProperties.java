@@ -16,6 +16,8 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(value = "darian.aop-log")
 public class AopLoggerProperties {
 
+    private Integer maxLength = 500;
+
     private boolean cacheLoggerRequest = false;
 
     private boolean cacheLoggerResponse = false;

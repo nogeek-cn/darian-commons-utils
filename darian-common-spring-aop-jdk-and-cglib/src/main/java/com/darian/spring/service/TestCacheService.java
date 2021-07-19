@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 @CacheLogger
-public class TestCacheImpl {
+public class TestCacheService {
 
     public String test(String name) {
-        return name + "-TestCacheImpl";
+        return name + "-TestCacheService";
     }
 }

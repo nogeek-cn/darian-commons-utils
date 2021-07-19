@@ -82,20 +82,21 @@ public class CacheInterceptor extends BaseAbstractLogInterceptor {
         sb.append(TIME_UNIT);
         sb.append(LOG_PARAM_SUFFIX);
 
-        // TODO: 全局开关打开
-//        if ()
-
-        if (cacheLogger != null && cacheLogger.needParams()) {
-            // 参数已经有 "()" 号了
-            sb.append(getMsgOfArgs(args));
+        if (aopLoggerProperties.isCacheLoggerRequest()) {
+            if (cacheLogger != null && cacheLogger.needParams()) {
+                // 参数已经有 "()" 号了
+                sb.append(getMsgOfArgs(args));
+            }
         }
-        // TODO: 全局开关打开
-
-        if (cacheLogger!= null && cacheLogger.needResult()) {
-            sb.append(LOG_PARAM_PREFIX);
-            sb.append(getMsg(result));
-            sb.append(LOG_PARAM_SUFFIX);
+        if (aopLoggerProperties.isCacheLoggerResponse()) {
+            if (cacheLogger != null && cacheLogger.needResult()) {
+                sb.append(LOG_PARAM_PREFIX);
+                sb.append(getMsg(result));
+                sb.append(LOG_PARAM_SUFFIX);
+            }
         }
+
+
         sb.append(LOG_SUFFIX);
         return sb.toString().replaceAll("\n", "");
     }

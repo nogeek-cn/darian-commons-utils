@@ -4,15 +4,12 @@ import com.darian.spring.configuration.EnableAOPLogger;
 import com.darian.spring.controller.TestController;
 import com.darian.spring.mapper.SecurityMapper;
 import com.darian.spring.mapper.UserMapper;
-import com.darian.spring.service.ServiceTestImpl;
-import org.mybatis.spring.annotation.MapperScan;
+import com.darian.spring.service.TestService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ImportResource;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 /***
  *
@@ -25,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 public class TestAOPApplication {
 
     @Resource
-    private ServiceTestImpl serviceTestImpl;
+    private TestService testService;
 
     @Resource
     private UserMapper userMapper;

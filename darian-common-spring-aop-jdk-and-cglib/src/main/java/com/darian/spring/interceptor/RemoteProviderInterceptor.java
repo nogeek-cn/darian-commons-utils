@@ -82,20 +82,20 @@ public class RemoteProviderInterceptor extends BaseAbstractLogInterceptor {
         sb.append(TIME_UNIT);
         sb.append(LOG_PARAM_SUFFIX);
 
-        // TODO: 全局开关打开
-//        if ()
-
-        if (remoteProviderLogger != null && remoteProviderLogger.needParams()) {
-            // 参数已经有 "()" 号了
-            sb.append(getMsgOfArgs(args));
+        if (aopLoggerProperties.isRemoteProviderRequest()) {
+            if (remoteProviderLogger != null && remoteProviderLogger.needParams()) {
+                // 参数已经有 "()" 号了
+                sb.append(getMsgOfArgs(args));
+            }
         }
-        // TODO: 全局开关打开
-
-        if (remoteProviderLogger != null && remoteProviderLogger.needResult()) {
-            sb.append(LOG_PARAM_PREFIX);
-            sb.append(getMsg(result));
-            sb.append(LOG_PARAM_SUFFIX);
+        if (aopLoggerProperties.isRemoteProviderResponse()) {
+            if (remoteProviderLogger != null && remoteProviderLogger.needResult()) {
+                sb.append(LOG_PARAM_PREFIX);
+                sb.append(getMsg(result));
+                sb.append(LOG_PARAM_SUFFIX);
+            }
         }
+
         sb.append(LOG_SUFFIX);
         return sb.toString().replaceAll("\n", "");
     }

@@ -81,19 +81,18 @@ public class ControllerInterceptor extends BaseAbstractLogInterceptor {
         sb.append(TIME_UNIT);
         sb.append(LOG_PARAM_SUFFIX);
 
-        // TODO: 全局开关打开
-//        if ()
-
-        if (controllerLogger != null && controllerLogger.needParams()) {
-            // 参数已经有 "()" 号了
-            sb.append(getMsgOfArgs(args));
+        if (aopLoggerProperties.isControllerLoggerRequest()) {
+            if (controllerLogger != null && controllerLogger.needParams()) {
+                // 参数已经有 "()" 号了
+                sb.append(getMsgOfArgs(args));
+            }
         }
-        // TODO: 全局开关打开
-
-        if (controllerLogger!= null && controllerLogger.needResult()) {
-            sb.append(LOG_PARAM_PREFIX);
-            sb.append(getMsg(result));
-            sb.append(LOG_PARAM_SUFFIX);
+        if (aopLoggerProperties.isControllerLoggerResponse()) {
+            if (controllerLogger!= null && controllerLogger.needResult()) {
+                sb.append(LOG_PARAM_PREFIX);
+                sb.append(getMsg(result));
+                sb.append(LOG_PARAM_SUFFIX);
+            }
         }
 
         sb.append(LOG_SUFFIX);

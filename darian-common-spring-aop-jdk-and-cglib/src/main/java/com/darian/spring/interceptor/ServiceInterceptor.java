@@ -81,20 +81,21 @@ public class ServiceInterceptor extends BaseAbstractLogInterceptor {
         sb.append(TIME_UNIT);
         sb.append(LOG_PARAM_SUFFIX);
 
-        // TODO: 全局开关打开
-//        if ()
-
-        if (serviceLogger != null && serviceLogger.needParams()) {
-            // 参数已经有 "()" 号了
-            sb.append(getMsgOfArgs(args));
+        if (aopLoggerProperties.isServiceRequest()) {
+            if (serviceLogger != null && serviceLogger.needParams()) {
+                // 参数已经有 "()" 号了
+                sb.append(getMsgOfArgs(args));
+            }
         }
-        // TODO: 全局开关打开
-
-        if (serviceLogger!= null && serviceLogger.needResult()) {
-            sb.append(LOG_PARAM_PREFIX);
-            sb.append(getMsg(result));
-            sb.append(LOG_PARAM_SUFFIX);
+        if (aopLoggerProperties.isServiceResponse()) {
+            if (serviceLogger != null && serviceLogger.needResult()) {
+                sb.append(LOG_PARAM_PREFIX);
+                sb.append(getMsg(result));
+                sb.append(LOG_PARAM_SUFFIX);
+            }
         }
+
+
         sb.append(LOG_SUFFIX);
         return sb.toString().replaceAll("\n", "");
     }

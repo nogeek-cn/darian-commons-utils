@@ -14,14 +14,15 @@ import javax.swing.plaf.PanelUI;
  * @date 2021/7/9  下午23:01
  */
 @Service
-public class ServiceTestImpl {
+public class TestService {
 
     @Resource
     private UserMapper userMapper;
 
     @ServiceLogger
     public String test(String name) {
+        userMapper.selectById(1L);
         userMapper.selectByIdXXXXX(1L);
-        return name + "-ServiceTestImpl";
+        return name + "-TestService";
     }
 }

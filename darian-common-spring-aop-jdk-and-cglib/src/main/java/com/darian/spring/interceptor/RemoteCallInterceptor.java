@@ -82,20 +82,20 @@ public class RemoteCallInterceptor extends BaseAbstractLogInterceptor {
         sb.append(TIME_UNIT);
         sb.append(LOG_PARAM_SUFFIX);
 
-        // TODO: 全局开关打开
-//        if ()
-
-        if (remoteCallLogger != null && remoteCallLogger.needParams()) {
-            // 参数已经有 "()" 号了
-            sb.append(getMsgOfArgs(args));
+        if (aopLoggerProperties.isRemoteCallRequest()) {
+            if (remoteCallLogger != null && remoteCallLogger.needParams()) {
+                // 参数已经有 "()" 号了
+                sb.append(getMsgOfArgs(args));
+            }
         }
-        // TODO: 全局开关打开
-
-        if (remoteCallLogger!= null && remoteCallLogger.needResult()) {
-            sb.append(LOG_PARAM_PREFIX);
-            sb.append(getMsg(result));
-            sb.append(LOG_PARAM_SUFFIX);
+        if (aopLoggerProperties.isRemoteCallResponse()) {
+            if (remoteCallLogger != null && remoteCallLogger.needResult()) {
+                sb.append(LOG_PARAM_PREFIX);
+                sb.append(getMsg(result));
+                sb.append(LOG_PARAM_SUFFIX);
+            }
         }
+
         sb.append(LOG_SUFFIX);
         return sb.toString().replaceAll("\n", "");
     }

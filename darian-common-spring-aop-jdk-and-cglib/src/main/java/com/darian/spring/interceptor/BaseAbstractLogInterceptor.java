@@ -23,7 +23,7 @@ public abstract class BaseAbstractLogInterceptor implements MethodInterceptor {
     private Logger LOGGER = LoggerFactory.getLogger(BaseAbstractLogInterceptor.class);
 
     @Resource
-    private AopLoggerProperties aopLoggerProperties;
+    protected AopLoggerProperties aopLoggerProperties;
 
 
     /**
@@ -78,7 +78,7 @@ public abstract class BaseAbstractLogInterceptor implements MethodInterceptor {
 
 
     protected String getAPPContext() {
-        // TODO: 获取上下文, TranceId 等等
+        // TODO: 获取上下文, TranceId 等等 MDC
         return "traceId,rpcId,parentAppName,parentHostIP";
     }
 
