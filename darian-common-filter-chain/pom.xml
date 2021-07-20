@@ -12,6 +12,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>darian-common-filter-chain</artifactId>
+    <name>责任链+组合模式写的任务处理</name>
 
 
     <dependencies>

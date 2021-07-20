@@ -10,9 +10,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.darian</groupId>
     <artifactId>darian-commons-api</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <name>发牌，大文件并行读，测试注入，TOPN,二差树便利</name>
 
     <dependencies>
         <dependency>

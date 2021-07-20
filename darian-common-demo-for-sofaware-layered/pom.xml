@@ -11,6 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>darian-common-demo-for-sofaware-layered</artifactId>
+    <name>软件模式-门面-监控-适配</name>
 
 
     <dependencies>

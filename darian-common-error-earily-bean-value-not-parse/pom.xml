@@ -11,6 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>darian-common-error-earily-bean-value-not-parse</artifactId>
+    <name>Spring早期初始化@Value注入失败的场景</name>
 
     <properties>
     </properties>

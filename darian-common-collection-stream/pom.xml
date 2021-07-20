@@ -11,4 +11,5 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>darian-common-collection-stream</artifactId>
+    <name>并行流比串行流快的场景</name>
 </project>

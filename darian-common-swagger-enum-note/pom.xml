@@ -11,6 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>darian-common-swagger-enum-note</artifactId>
+    <name>swagger-String 转化成枚举 swagger-notes</name>
 
     <properties>
         <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
