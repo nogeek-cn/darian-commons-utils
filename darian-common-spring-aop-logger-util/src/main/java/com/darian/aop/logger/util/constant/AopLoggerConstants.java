@@ -32,4 +32,9 @@ public class AopLoggerConstants {
 
     public static final String SERVICE_SHADOW_LOGGER_NAME = "SERVICE_SHADOW_LOGGER";
 
+    /**
+     * 压测标记
+     */
+    public static final String SHADOW_MDC_KEY = "SHADOW";
+
 }

@@ -1,5 +1,6 @@
 package com.darian.aop.logger.util.test;
 
+import com.darian.aop.logger.util.constant.AopLoggerConstants;
 import com.darian.aop.logger.util.test.mapper.UserMapper;
 import com.darian.aop.logger.util.configuration.EnableAOPLogger;
 import com.darian.aop.logger.util.test.controller.TestController;
@@ -7,6 +8,7 @@ import com.darian.aop.logger.util.test.mapper.SecurityMapper;
 import com.darian.aop.logger.util.test.service.TestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -51,5 +53,9 @@ public class TestAOPApplication {
             System.err.println("error:" + e.getMessage());
         }
         userMapper.selectById(1L);
+
+        MDC.put(AopLoggerConstants.SHADOW_MDC_KEY, "true");
+
+        LOGGER.info(testController.test(new TestController.ModuleRequest("xxxxxxxx")).toString());
     }
 }

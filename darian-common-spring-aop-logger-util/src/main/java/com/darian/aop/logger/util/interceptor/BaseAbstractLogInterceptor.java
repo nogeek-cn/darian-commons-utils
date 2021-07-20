@@ -2,9 +2,11 @@ package com.darian.aop.logger.util.interceptor;
 
 
 import com.darian.aop.logger.util.configuration.AopLoggerProperties;
+import com.darian.aop.logger.util.constant.AopLoggerConstants;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
@@ -112,7 +114,16 @@ public abstract class BaseAbstractLogInterceptor implements MethodInterceptor {
      */
     protected boolean isShadow() {
         // TODO: 是否是压测流量
-        return false;
+        Map<String, String> copyOfContextMap = MDC.getCopyOfContextMap();
+        if (copyOfContextMap == null) {
+            return false;
+        }
+
+        String shadow = copyOfContextMap.get(AopLoggerConstants.SHADOW_MDC_KEY);
+        if (shadow == null || shadow.length() == 0) {
+            return false;
+        }
+        return Boolean.valueOf(shadow);
     }
 
     protected String getAPPContext() {
