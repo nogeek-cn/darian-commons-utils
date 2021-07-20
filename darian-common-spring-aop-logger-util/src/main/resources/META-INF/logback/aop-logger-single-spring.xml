@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false" scan="false" scanPeriod="60 seconds">
+
+    <property resource="application.properties"/>
+    <property name="APP_NAME" value="${spring.application.name}"/>
+    <property name="LOG_HOME" value="logs"/>
+
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wex"
+                    converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx"
+                    converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+
+<!--    <property name="CONSOLE_LOG_PATTERN"-->
+<!--              value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr([traceId:%X{traceId}]) %clr(%-5level) %clr(${PID:- }){magenta} %clr(-&#45;&#45;){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>-->
+
+    <property name="CONSOLE_LOGGER_PATTERN"
+              value="%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{0} - %msg%n"/>
+
+    <property name="FILE_LOGGER_PATTERN"
+              value="${CONSOLE_LOGGER_PATTERN}"/>
+
+    <!-- 控制台输出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOGGER_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 按照每天生成日志文件 -->
+    <appender name="FILE_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--日志文件输出的文件名-->
+            <fileNamePattern>${LOG_HOME}/${APP_NAME}/common_log.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <MaxHistory>1</MaxHistory>
+            <MaxFileSize>50MB</MaxFileSize>
+        </rollingPolicy>
+        <!-- encoder 默认配置为 PatternLayoutEncoder -->
+        <encoder>
+            <pattern>${FILE_LOGGER_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+<!--    <logger name="com.darian" level="INFO">-->
+<!--        <appender-ref ref="FILE"/>-->
+<!--    </logger>-->
+
+    <logger name="CACHE_LOGGER" level="INFO">
+        <appender-ref ref="FILE_APPENDER"/>
+    </logger>
+    <logger name="CACHE_SHADOW_LOGGER" level="INFO">
+        <appender-ref ref="FILE_APPENDER"/>
+    </logger>
+    <logger name="CONTROLLER_LOGGER" level="INFO">
+        <appender-ref ref="FILE_APPENDER"/>
+    </logger>
+    <logger name="CONTROLLER_SHADOW_LOGGER" level="INFO">
+        <appender-ref ref="FILE_APPENDER"/>
+    </logger>
+    <logger name="DAL_LOGGER" level="INFO">
+        <appender-ref ref="FILE_APPENDER"/>
+    </logger>
+    <logger name="DAL_SHADOW_LOGGER" level="INFO">
+        <appender-ref ref="FILE_APPENDER"/>
+    </logger>
+    <logger name="REMOTE_CALL_LOGGER" level="INFO">
+        <appender-ref ref="FILE_APPENDER"/>
+    </logger>
+    <logger name="REMOTE_CALL_SHADOW_LOGGER" level="INFO">
+        <appender-ref ref="FILE_APPENDER"/>
+    </logger>
+    <logger name="REMOTE_PROVIDER_LOGGER" level="INFO">
+        <appender-ref ref="FILE_APPENDER"/>
+    </logger>
+    <logger name="REMOTE_PROVIDER_SHADOW_LOGGER" level="INFO">
+        <appender-ref ref="FILE_APPENDER"/>
+    </logger>
+    <logger name="SERVICE_LOGGER" level="INFO">
+        <appender-ref ref="FILE_APPENDER"/>
+    </logger>
+    <logger name="SERVICE_SHADOW_LOGGER" level="INFO">
+        <appender-ref ref="FILE_APPENDER"/>
+    </logger>
+
+    <!-- 日志数据级别 -->
+<!--    <root level="INFO">-->
+<!--        <appender-ref ref="STDOUT"/>-->
+<!--    </root>-->
+
+</configuration>

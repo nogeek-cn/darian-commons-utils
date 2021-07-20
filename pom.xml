@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>darian-commons-utils-parent</module>
+
         <module>darian-commons-api</module>
         <module>darian-commons-spring</module>
         <module>darian-commons-interface-utils</module>
@@ -19,9 +20,11 @@
         <module>darian-common-demo-for-sofaware-layered</module>
         <module>darian-common-filter-chain</module>
         <module>darian-common-math-mxparser</module>
-        <module>darian-common-spring-aop-jdk-and-cglib</module>
         <module>darian-common-collection-stream</module>
         <module>darian-common-swagger-enum-note</module>
+
+        <module>darian-common-spring-aop-logger-util</module>
+        <module>darian-common-spring-aop-logger-util-example</module>
     </modules>
 
    <!--

@@ -139,7 +139,7 @@ public class SwaggerConfig implements ModelPropertyBuilderPlugin {
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
 
-        String joinText = " <br/>desc:[<br/>    " + String.join(";<br/>    ", displayValues) + "<br/>    ]";
+        String joinText = " \ndesc:[\n    " + String.join(";\n    ", displayValues) + "\n    ]";
         try {
             // 拿到字段上原先的描述
             Field mField = ModelPropertyBuilder.class.getDeclaredField("description");
