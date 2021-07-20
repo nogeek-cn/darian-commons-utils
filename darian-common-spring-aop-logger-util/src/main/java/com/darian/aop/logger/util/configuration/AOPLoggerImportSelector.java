@@ -1,17 +1,9 @@
 package com.darian.aop.logger.util.configuration;
 
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.util.ContextInitializer;
-import org.slf4j.impl.StaticLoggerBinder;
 import org.springframework.context.annotation.ImportSelector;
+import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Map;
 
 /***
  *
@@ -25,16 +17,19 @@ public class AOPLoggerImportSelector implements ImportSelector {
 
     @Override
     public String[] selectImports(AnnotationMetadata importingClassMetadata) {
-        Map<String, Object> annotationAttributes = importingClassMetadata.getAnnotationAttributes(EnableAOPLogger.class.getName());
-        Boolean enable = (Boolean) annotationAttributes.get("enable");
+
+        AnnotationAttributes attributes = AnnotationAttributes.fromMap(importingClassMetadata.getAnnotationAttributes(EnableAOPLogger.class.getName(), true));
+
+        Boolean enable = attributes.getBoolean("enable");
         if (!enable) {
             return new String[]{};
         }
 
-        Boolean multipleLoggerFile = (Boolean) annotationAttributes.get("multipleLoggerFile");
+        Boolean multipleLoggerFile = attributes.getBoolean("multipleLoggerFile");
         AOPLoggerLogbackContext.initLogContext(multipleLoggerFile);
 
-        Boolean baseMapperAspect = (Boolean) annotationAttributes.get("baseMapperAspect");
+        Boolean baseMapperAspect = attributes.getBoolean("baseMapperAspect");
+
         if (baseMapperAspect) {
             return new String[]{ImportBaseMapperAspectResourceInterceptor.class.getName(),
                     ImportAspectResourceInterceptor.class.getName(),
