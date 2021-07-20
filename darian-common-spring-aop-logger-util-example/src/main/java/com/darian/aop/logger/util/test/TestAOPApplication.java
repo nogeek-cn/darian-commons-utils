@@ -22,7 +22,7 @@ import javax.annotation.Resource;
  * @date 2021/7/9  下午21:59
  */
 @SpringBootApplication
-@EnableAOPLogger(multipleLoggerFile = false, baseMapperAspect = true)
+@EnableAOPLogger(multipleLoggerFile = true, baseMapperAspect = true)
 public class TestAOPApplication {
 
     private Logger LOGGER = LoggerFactory.getLogger(getClass());

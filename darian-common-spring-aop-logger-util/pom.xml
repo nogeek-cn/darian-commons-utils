@@ -16,7 +16,7 @@
     <artifactId>darian-common-spring-aop-logger-util</artifactId>
 
     <properties>
-        <mybatis-plus.version>3.4.1</mybatis-plus.version>
+        <mybatis-plus.version>3.1.2</mybatis-plus.version>
     </properties>
 
 

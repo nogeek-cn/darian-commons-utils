@@ -105,7 +105,7 @@
     <appender name="DAL_LOGGER_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!--日志文件输出的文件名-->
-            <fileNamePattern>${LOG_HOME}/${APP_NAME}/controller_shadow_log.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_HOME}/${APP_NAME}/dal_log.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <MaxHistory>1</MaxHistory>
             <MaxFileSize>50MB</MaxFileSize>
         </rollingPolicy>
@@ -119,7 +119,7 @@
     <appender name="DAL_SHADOW_LOGGER_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!--日志文件输出的文件名-->
-            <fileNamePattern>${LOG_HOME}/${APP_NAME}/controller_shadow_log.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_HOME}/${APP_NAME}/dal_shadow_log.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <MaxHistory>1</MaxHistory>
             <MaxFileSize>50MB</MaxFileSize>
         </rollingPolicy>
@@ -147,7 +147,7 @@
     <appender name="REMOTE_CALL_SHADOW_LOGGER_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!--日志文件输出的文件名-->
-            <fileNamePattern>${LOG_HOME}/${APP_NAME}/remote_provider_shadow_log.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_HOME}/${APP_NAME}/remote_call_shadow_log.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <MaxHistory>1</MaxHistory>
             <MaxFileSize>50MB</MaxFileSize>
         </rollingPolicy>
@@ -161,7 +161,7 @@
     <appender name="REMOTE_PROVIDER_LOGGER_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!--日志文件输出的文件名-->
-            <fileNamePattern>${LOG_HOME}/${APP_NAME}/remote_provider_shadow_log.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_HOME}/${APP_NAME}/remote_provider_log.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <MaxHistory>1</MaxHistory>
             <MaxFileSize>50MB</MaxFileSize>
         </rollingPolicy>
@@ -175,7 +175,7 @@
     <appender name="REMOTE_PROVIDER_SHADOW_LOGGER_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!--日志文件输出的文件名-->
-            <fileNamePattern>${LOG_HOME}/${APP_NAME}/remote_call_shadow_log.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_HOME}/${APP_NAME}/remote_provider_shadow_log.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <MaxHistory>1</MaxHistory>
             <MaxFileSize>50MB</MaxFileSize>
         </rollingPolicy>
