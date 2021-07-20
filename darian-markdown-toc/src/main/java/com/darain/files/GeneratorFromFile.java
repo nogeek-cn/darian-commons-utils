@@ -83,7 +83,7 @@ public class GeneratorFromFile {
         GIT_BRANCH = System.getProperty("GIT_BRANCH", "master");
         README_DIRECTORY_DOC = System.getProperty("README_DIRECTORY_DOC");
         FILE_PATH = System.getProperty("FILE_PATH");
-        if (FILE_PATH == null || FILE_PATH.isBlank()) {
+        if (FILE_PATH == null || FILE_PATH.length() != 0) {
             throw new RuntimeException("FILE_PATH is Blank");
         }
 
@@ -105,7 +105,7 @@ public class GeneratorFromFile {
         sb.append("  GIT_BRANCH : " + GIT_BRANCH + "\n");
         sb.append("  README_DIRECTORY_DOC : " + README_DIRECTORY_DOC + "\n");
         sb.append("  FILE_PATH : " + FILE_PATH + "\n");
-        if (README_DIRECTORY_DOC == null || README_DIRECTORY_DOC.isBlank()) {
+        if (README_DIRECTORY_DOC == null || README_DIRECTORY_DOC.length() == 0) {
             sb.append("    {\n");
             sb.append("      while generator to file ["
                     + FILE_PATH + GIT_PATH_FILE_NAME + "\\" + README_DIRECTORY_DOC_FILENAME
@@ -113,7 +113,7 @@ public class GeneratorFromFile {
             sb.append("    }\n");
         }
         sb.append("  OTHER_URL_PRE : " + OTHER_URL_PRE + "\n");
-        if (OTHER_URL_PRE == null || OTHER_URL_PRE.isBlank()) {
+        if (OTHER_URL_PRE == null || OTHER_URL_PRE.length() == 0) {
             sb.append("    {\n");
             sb.append("      OTHER_URL_PRE is Blank\n");
 
@@ -283,13 +283,15 @@ public class GeneratorFromFile {
     }
 
     private static void assertTrue(boolean expresion, String errorMsg) {
-        if (expresion != true)
+        if (expresion != true) {
             throw new AssertionException(errorMsg);
+        }
     }
 
     private static void assertTrue(boolean expresion) {
-        if (expresion != true)
+        if (expresion != true) {
             throw new AssertionException();
+        }
     }
 
     private static boolean isNotBlank(String str) {

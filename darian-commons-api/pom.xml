@@ -6,6 +6,7 @@
         <artifactId>darian-commons-utils-parent</artifactId>
         <groupId>com.darian</groupId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath>../darian-commons-utils-parent/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
