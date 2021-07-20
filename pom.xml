@@ -25,6 +25,7 @@
 
         <module>darian-common-spring-aop-logger-util</module>
         <module>darian-common-spring-aop-logger-util-example</module>
+        <module>darian-common-error-earily-bean-value-not-parse</module>
     </modules>
 
    <!--
