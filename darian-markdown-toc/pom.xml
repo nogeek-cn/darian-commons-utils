@@ -11,6 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>darian-markdown-toc</artifactId>
+    <name>为Markdown生成TOC目录，还为文件夹生成目录，后迁移到 darian-lucene-file 添加全文检索的功能</name>
 
     <dependencies>
         <dependency>

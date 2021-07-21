@@ -11,7 +11,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>darian-commons-api</artifactId>
-    <name>发牌，大文件并行读，测试注入，TOPN,二差树便利</name>
+    <name>发牌，大文件并行读，测试注入,TOPN,二叉树便利</name>
+
+    <properties>
+        <mockito.version>3.1.0</mockito.version>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -20,12 +24,7 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>com.alipay.sofa.acts</groupId>
-            <artifactId>acts-bom</artifactId>
-            <version>1.0.0</version>
-            <type>pom</type>
-        </dependency>
+
         <!--        <dependency>-->
         <!--            <groupId>org.apache.commons</groupId>-->
         <!--            <artifactId>commons-lang3</artifactId>-->
@@ -38,10 +37,18 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.alipay.sofa.acts</groupId>
+            <artifactId>acts-bom</artifactId>
+            <version>1.0.0</version>
+            <type>pom</type>
+        </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>3.1.0</version>
+            <version>${mockito.version}</version>
+<!--            <version>3.1.0</version>  sofa 依赖 3.1.0 -->
             <scope>compile</scope>
         </dependency>
     </dependencies>

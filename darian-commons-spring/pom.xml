@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>darian-commons-spring</artifactId>
-    <name>darian-commons-spring</name>
+    <name>一些Demo，注入Map,BeanName接口，服务上下文传递</name>
 
 
     <dependencies>
@@ -59,8 +59,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>${jdk-source-version}</source>
-                    <target>${jdk-target-version}</target>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
         </plugins>

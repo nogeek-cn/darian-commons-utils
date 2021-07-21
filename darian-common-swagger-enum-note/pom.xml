@@ -14,8 +14,7 @@
     <name>swagger-String 转化成枚举 swagger-notes</name>
 
     <properties>
-        <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
-        <swagger-bootstrap-ui.version>1.9.3</swagger-bootstrap-ui.version>
+
     </properties>
 
     <dependencies>

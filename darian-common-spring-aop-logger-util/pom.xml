@@ -17,7 +17,6 @@
     <name>日志+分层（web+remote_call+cache+dal+service+remote-provider）+压测隔离</name>
 
     <properties>
-        <mybatis-plus.version>3.1.2</mybatis-plus.version>
     </properties>
 
 
@@ -40,7 +39,6 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybatis-plus.version}</version>
             <optional>true</optional>
         </dependency>
         <dependency>
