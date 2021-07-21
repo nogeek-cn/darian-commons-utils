@@ -1,6 +1,6 @@
 package com.darian.aop.logger.util.test;
 
-import com.darian.aop.logger.util.constant.AopLoggerConstants;
+import com.darian.aop.logger.util.configuration.AopLoggerProperties;
 import com.darian.aop.logger.util.test.mapper.UserMapper;
 import com.darian.aop.logger.util.configuration.EnableAOPLogger;
 import com.darian.aop.logger.util.test.controller.TestController;
@@ -25,10 +25,13 @@ import javax.annotation.Resource;
 @EnableAOPLogger(multipleLoggerFile = true, baseMapperAspect = true)
 public class TestAOPApplication {
 
-    private Logger LOGGER = LoggerFactory.getLogger(getClass());
+    private Logger LOGGER = LoggerFactory.getLogger(TestAOPApplication.class);
 
     @Resource
     private TestService testService;
+
+    @Resource
+    private AopLoggerProperties aopLoggerProperties;
 
     @Resource
     private UserMapper userMapper;
@@ -45,17 +48,32 @@ public class TestAOPApplication {
 
     @PostConstruct
     public void test() {
-        LOGGER.info(testController.test(new TestController.ModuleRequest("xxxxxxxx")).toString());
-        ;
+        System.out.println();
+        LOGGER.error("开始测试");
+
+        LOGGER.error("正常流量 无 traceId, rpcId, parentAppName, parentHostIp:");
+        testController.test(new TestController.ModuleRequest("aaa"));
         try {
             testController.testError();
         } catch (Exception e) {
-            System.err.println("error:" + e.getMessage());
         }
-        userMapper.selectById(1L);
 
-        MDC.put(AopLoggerConstants.SHADOW_MDC_KEY, "true");
+        LOGGER.error("正常流量，有 traceId, rpcId, parentAppName, parentHostIp:");
+        MDC.put(aopLoggerProperties.getTraceIdMdcKey(), "mockTraceId");
+        MDC.put(aopLoggerProperties.getRpcIdMdcKey(), "mockRpcId");
+        MDC.put(aopLoggerProperties.getParentAppNameMdcKey(), "mockParentAppName");
+        MDC.put(aopLoggerProperties.getParentHostIpMdcKey(), "mockParentHostIp");
+        testController.test(new TestController.ModuleRequest("bbb"));
 
-        LOGGER.info(testController.test(new TestController.ModuleRequest("xxxxxxxx")).toString());
+        LOGGER.error("压测流量，有 traceId, rpcId, parentAppName, parentHostIp:");
+        MDC.put(aopLoggerProperties.getShadowMdcKey(), "true");
+        MDC.put(aopLoggerProperties.getTraceIdMdcKey(), "shadowMockTraceId");
+        MDC.put(aopLoggerProperties.getRpcIdMdcKey(), "shadowMockRpcId");
+        MDC.put(aopLoggerProperties.getParentAppNameMdcKey(), "shadowMockParentAppName");
+        MDC.put(aopLoggerProperties.getParentHostIpMdcKey(), "shadowMockParentHostIp");
+        testController.test(new TestController.ModuleRequest("ccc"));
+
+        LOGGER.error("测试结束");
+
     }
 }

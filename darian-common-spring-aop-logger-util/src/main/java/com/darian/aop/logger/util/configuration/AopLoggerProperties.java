@@ -41,4 +41,18 @@ public class AopLoggerProperties {
     private boolean serviceRequest = false;
 
     private boolean serviceResponse = false;
+
+    /**
+     * 压测标记
+     */
+    private String shadowMdcKey = "SHADOW";
+
+    private String traceIdMdcKey = "traceId";
+
+    private String rpcIdMdcKey = "rpcId";
+
+    private String parentAppNameMdcKey = "parentAppName";
+
+    private String parentHostIpMdcKey = "parentHostIP";
+
 }

@@ -2,7 +2,6 @@ package com.darian.aop.logger.util.interceptor;
 
 
 import com.darian.aop.logger.util.configuration.AopLoggerProperties;
-import com.darian.aop.logger.util.constant.AopLoggerConstants;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +10,7 @@ import org.slf4j.MDC;
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -113,13 +113,12 @@ public abstract class BaseAbstractLogInterceptor implements MethodInterceptor {
      * @return
      */
     protected boolean isShadow() {
-        // TODO: 是否是压测流量
         Map<String, String> copyOfContextMap = MDC.getCopyOfContextMap();
         if (copyOfContextMap == null) {
             return false;
         }
 
-        String shadow = copyOfContextMap.get(AopLoggerConstants.SHADOW_MDC_KEY);
+        String shadow = copyOfContextMap.get(aopLoggerProperties.getShadowMdcKey());
         if (shadow == null || shadow.length() == 0) {
             return false;
         }
@@ -127,8 +126,25 @@ public abstract class BaseAbstractLogInterceptor implements MethodInterceptor {
     }
 
     protected String getAPPContext() {
-        // TODO: 获取上下文, TranceId 等等 MDC
-        return "traceId,rpcId,parentAppName,parentHostIP";
+        // "traceId,rpcId,parentAppName,parentHostIP";
+        Map<String, String> mdcContentMap = MDC.getCopyOfContextMap();
+        if (mdcContentMap == null) {
+            mdcContentMap = new HashMap<>();
+        }
+        String traceId = isBlankGetDefault(mdcContentMap.get(aopLoggerProperties.getTraceIdMdcKey()), "-");
+        String rpcId = isBlankGetDefault(mdcContentMap.get(aopLoggerProperties.getRpcIdMdcKey()), "-");
+        String parentAppName = isBlankGetDefault(mdcContentMap.get(aopLoggerProperties.getParentAppNameMdcKey()), "-");
+        String parentHostIp = isBlankGetDefault(mdcContentMap.get(aopLoggerProperties.getParentHostIpMdcKey()), "-");
+
+        return new StringBuilder()
+                .append(traceId)
+                .append(LOG_SEP)
+                .append(rpcId)
+                .append(LOG_SEP)
+                .append(parentAppName)
+                .append(LOG_SEP)
+                .append(parentHostIp)
+                .toString();
     }
 
 
