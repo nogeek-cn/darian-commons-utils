@@ -1,5 +1,7 @@
 package com.darian.aop.logger.util.test.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.darian.aop.logger.util.test.mapper.UserDO;
 import com.darian.aop.logger.util.test.mapper.UserMapper;
 import com.darian.aop.logger.util.annotation.ServiceLogger;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,9 @@ public class TestService {
 
     @ServiceLogger
     public String test(String name) {
+        LambdaQueryWrapper<UserDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(UserDO::getId, 1L);
+        userMapper.selectOne(lambdaQueryWrapper);
         userMapper.selectById(1L);
         userMapper.selectByIdXXXXX(1L);
         return name + "-TestService";
