@@ -4,6 +4,8 @@
     <!-- 用来测试 logback.xml 和 logback-spring.xml 的优先级， -->
     <!-- logback-spring.xml + logging.config 优先于 logback.xml -->
 
+    <property resource="application.properties"/>
+    <property name="APP_NAME" value="${spring.application.name}"/>
     <property name="LOG_HOME" value="logs"/>
 
     <!-- 控制台输出 -->
@@ -12,11 +14,32 @@
         <encoder
                 class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
-<!--            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>-->
+            <!--            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>-->
 
             <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{0} - %msg%n</pattern>
         </encoder>
     </appender>
+
+    <!-- 按照每天生成日志文件 -->
+    <appender name="FILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--日志文件输出的文件名-->
+            <fileNamePattern>${LOG_HOME}/${APP_NAME}/common_log.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <MaxHistory>1</MaxHistory>
+            <MaxFileSize>50MB</MaxFileSize>
+        </rollingPolicy>
+        <!-- encoder 默认配置为 PatternLayoutEncoder -->
+        <encoder>
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+            <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{0} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <logger name="com.darian" level="INFO">
+        <appender-ref ref="FILE"/>
+    </logger>
+
     <!-- 日志输出级别 -->
     <root level="INFO" activity="false">
         <appender-ref ref="STDOUT" />
