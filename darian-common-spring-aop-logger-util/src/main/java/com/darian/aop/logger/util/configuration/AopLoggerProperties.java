@@ -51,9 +51,15 @@ public class AopLoggerProperties {
 
     private String traceIdMdcKey = "traceId";
 
+    private String traceIdHttpHeader = "traceId";
+
+    private int traceMDCFilterOrder = 2147483638;
+
     private String rpcIdMdcKey = "rpcId";
 
     private String parentAppNameMdcKey = "parentAppName";
+
+    private String parentAppNameHttpHeader = "parentAppName";
 
     private String parentHostIpMdcKey = "parentHostIP";
 

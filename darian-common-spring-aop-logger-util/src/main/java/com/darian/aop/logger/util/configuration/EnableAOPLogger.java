@@ -23,4 +23,6 @@ public @interface EnableAOPLogger {
     boolean multipleLoggerFile() default false;
 
     boolean baseMapperAspect() default true;
+
+    boolean traceMDCFilter() default true;
 }
