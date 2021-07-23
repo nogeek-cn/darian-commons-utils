@@ -11,6 +11,12 @@ darian-commons-utils：日常工作的总结
 ## darian-common-spring-aop-logger-util
 ## darian-common-spring-aop-logger-util-example
 
+- logback 要点
+  - ** 多个 `APPENDER` 不能指定同一个 `File` **
+  - 多文件模式
+  - 单文件模式
+  - 压测标记
+
 
 ### 运行结果
 
