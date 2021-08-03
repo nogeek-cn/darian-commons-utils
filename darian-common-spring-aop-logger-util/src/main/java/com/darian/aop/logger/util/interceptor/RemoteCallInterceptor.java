@@ -48,9 +48,12 @@ public class RemoteCallInterceptor extends BaseAbstractLogInterceptor {
             result = methodInvocation.proceed();
             isSuccess = isSuccess(result);
             return result;
-        } catch (Throwable t) {
+        } catch (Exception e) {
             isSuccess = false;
-            throw t;
+            templateLoggerError(REMOTE_CALL_LOGGER,
+                    REMOTE_CALL_SHADOW_LOGGER,
+                    "[LOGGER][REMOTE_CALL][msg]" + e.getMessage(), e);
+            throw e;
         } finally {
 
             // 确保任何情况下业务都能正常进行

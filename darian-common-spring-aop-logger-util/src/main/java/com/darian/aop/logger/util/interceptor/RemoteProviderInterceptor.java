@@ -47,9 +47,12 @@ public class RemoteProviderInterceptor extends BaseAbstractLogInterceptor {
             result = methodInvocation.proceed();
             isSuccess = isSuccess(result);
             return result;
-        } catch (Throwable t) {
+        } catch (Exception e) {
             isSuccess = false;
-            throw t;
+            templateLoggerError(REMOTE_PROVIDER_LOGGER,
+                    REMOTE_PROVIDER_SHADOW_LOGGER,
+                    "[LOGGER][REMOTE_PROVIDER][msg]" + e.getMessage(), e);
+            throw e;
         } finally {
 
             // 确保任何情况下业务都能正常进行

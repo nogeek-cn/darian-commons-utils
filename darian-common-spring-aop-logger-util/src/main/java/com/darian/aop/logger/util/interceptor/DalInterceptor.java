@@ -47,9 +47,12 @@ public class DalInterceptor extends BaseAbstractLogInterceptor {
             result = methodInvocation.proceed();
             isSuccess = isSuccess(result);
             return result;
-        } catch (Throwable t) {
+        } catch (Exception e) {
             isSuccess = false;
-            throw t;
+            templateLoggerError(DAL_LOGGER,
+                    DAL_SHADOW_LOGGER,
+                    "[LOGGER][DAL][msg]" + e.getMessage(), e);
+            throw e;
         } finally {
 
             // 确保任何情况下业务都能正常进行
